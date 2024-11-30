@@ -5,7 +5,7 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
-  "openapi": "./privateOrganizerApi.json",
+  "openapi": "/privateOrganizerApi.json",
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#0D9373",
