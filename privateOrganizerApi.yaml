@@ -6,44 +6,11 @@ info:
     The TIXY Private Organizer API provides endpoints for event organizers to manage their events 
     and handle secure interactions with clients. It includes CORS preflight support, event retrieval 
     by unique ID or slug, and integrates with AWS Lambda for custom backend processing.
+servers:
+  - url: https://private.tixyapp.com
 
 paths:
   /events:
-    options:
-      summary: CORS preflight
-      description: >
-        Handles the preflight OPTIONS request for CORS support. This endpoint specifies the
-        allowed HTTP methods, headers, and origins for cross-origin resource sharing.
-      responses:
-        '200':
-          description: >
-            Default response for CORS OPTIONS requests, returning the allowed origins, 
-            methods, and headers for client requests.
-          headers:
-            Access-Control-Allow-Origin:
-              description: Indicates the allowed origin(s) for requests.
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              description: Specifies the allowed HTTP methods for the endpoint.
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              description: Lists the allowed headers for requests to the endpoint.
-              schema:
-                type: string
-      x-amazon-apigateway-integration:
-        responses:
-          default:
-            statusCode: 200
-            responseParameters:
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization'"
-        passthroughBehavior: when_no_match
-        requestTemplates:
-          application/json: '{"statusCode": 200}'
-        type: mock
     get:
       summary: Retrieve all events
       description: >
@@ -81,40 +48,6 @@ paths:
             - type: string
               pattern: '^[a-zA-Z0-9-_\\.]+$'
               description: Valid format for an SEO-friendly `eventSlug`.
-    options:
-      summary: CORS preflight
-      description: >
-        Handles the preflight OPTIONS request for the /event/{id} endpoint, defining the allowed 
-        HTTP methods, headers, and origins for CORS.
-      responses:
-        '200':
-          description: >
-            Default response for CORS OPTIONS requests for the /event/{id} endpoint.
-          headers:
-            Access-Control-Allow-Origin:
-              description: Specifies the allowed origin(s) for requests.
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              description: Indicates the allowed HTTP methods for the endpoint.
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              description: Lists the allowed headers for requests to this endpoint.
-              schema:
-                type: string
-      x-amazon-apigateway-integration:
-        responses:
-          default:
-            statusCode: 200
-            responseParameters:
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization'"
-        passthroughBehavior: when_no_match
-        requestTemplates:
-          application/json: '{"statusCode": 200}'
-        type: mock
     get:
       summary: Retrieve event details
       description: >
