@@ -1,0 +1,270 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "TIXY Private Organizer API",
+    "version": "1.0.0",
+    "description": "The TIXY Private Organizer API provides endpoints for event organizers to manage their events and handle secure interactions with clients. It includes CORS preflight support, event retrieval by unique ID or slug, and integrates with AWS Lambda for custom backend processing."
+  },
+  "paths": {
+    "/events": {
+      "options": {
+        "summary": "CORS preflight",
+        "description": "Handles the preflight OPTIONS request for CORS support. This endpoint specifies the allowed HTTP methods, headers, and origins for cross-origin resource sharing.",
+        "responses": {
+          "200": {
+            "description": "Default response for CORS OPTIONS requests, returning the allowed origins, methods, and headers for client requests.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "Indicates the allowed origin(s) for requests.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Specifies the allowed HTTP methods for the endpoint.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Lists the allowed headers for requests to the endpoint.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'"
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "summary": "Retrieve all events",
+        "description": "Returns a list of all available events managed by the organizer. This endpoint requires authentication and fetches event data securely.",
+        "security": [
+          {
+            "privateOrganizerApiAuthFunction": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response containing the list of events.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${privateOrganizerApiEndpointFunction.Arn}/invocations"
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/event/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The unique identifier (`eventId`) or SEO-friendly slug (`eventSlug`) for the event.",
+          "schema": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{24}$",
+                "description": "MongoDB ObjectId format for `eventId`."
+              },
+              {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9-_\\.]+$",
+                "description": "Valid format for an SEO-friendly `eventSlug`."
+              }
+            ]
+          }
+        }
+      ],
+      "options": {
+        "summary": "CORS preflight",
+        "description": "Handles the preflight OPTIONS request for the /event/{id} endpoint, defining the allowed HTTP methods, headers, and origins for CORS.",
+        "responses": {
+          "200": {
+            "description": "Default response for CORS OPTIONS requests for the /event/{id} endpoint.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "Specifies the allowed origin(s) for requests.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Indicates the allowed HTTP methods for the endpoint.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Lists the allowed headers for requests to this endpoint.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'"
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "summary": "Retrieve event details",
+        "description": "Fetches detailed information about a specific event using its unique identifier (`eventId`) or SEO-friendly slug (`eventSlug`).",
+        "security": [
+          {
+            "privateOrganizerApiAuthFunction": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event details successfully retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid identifier format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${privateOrganizerApiEndpointFunction.Arn}/invocations"
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Event": {
+        "type": "object",
+        "description": "Represents an event in the system.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the event."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the event."
+          },
+          "slug": {
+            "type": "string",
+            "description": "A short, URL-friendly identifier for the event, used for creating clean URLs."
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The scheduled date and time for the event."
+          },
+          "location": {
+            "type": "string",
+            "description": "The venue or location where the event will be held."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "description": "Represents an error response.",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "message": {
+            "type": "string",
+            "description": "A human-readable error message."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "privateOrganizerApiAuthFunction": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Custom API key authorization header for accessing private organizer endpoints.",
+        "x-amazon-apigateway-authtype": "custom",
+        "x-amazon-apigateway-authorizer": {
+          "authorizerUri": {
+            "uri": {
+              "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${privateOrganizerApiAuthFunction.Arn}/invocations"
+            }
+          },
+          "authorizerResultTtlInSeconds": 300,
+          "identitySource": "method.request.header.Authorization"
+        }
+      }
+    }
+  }
+}
