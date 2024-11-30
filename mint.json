@@ -5,7 +5,7 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
-  "openapi": "./privateOrganizerApi.yaml",
+  "openapi": "./privateOrganizerApi.json",
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#0D9373",
@@ -19,7 +19,7 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:cs@tixyapp.com"
     }
   ],
   "topbarCtaButton": {
