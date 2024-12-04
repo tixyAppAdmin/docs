@@ -42,7 +42,7 @@
          
           {
                 "group": "Quickstart",
-                "pages": ["authorization", "private_API_quickstart", "public_API_quickstart"]
+                "pages": ["api-authorization", "private_API_quickstart", "public_API_quickstart"]
             }
       ]
     },

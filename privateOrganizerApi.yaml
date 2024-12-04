@@ -10,7 +10,6 @@ servers:
   - url: https://private-api.tixyapp.com
 
 paths:
-
   /sales/event/{id}:
     get:
       summary: Retrieve sales report for a specific event
@@ -248,34 +247,36 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
   /statistics/event/{id}:
-      get:
-        summary: Retrieve statistics for a specific event
-        description: >
-          Provides ticket statistics for a specific event, including breakdowns for tickets sold, reserved, available, and more.
-        parameters:
-          - name: id
-            in: path
-            required: true
-            schema:
-              type: string
-              description: >
-                The unique identifier or slug for the event to retrieve statistics for.
-        responses:
-          '200':
+    get:
+      summary: Retrieve statistics for a specific event
+      description: >
+        Provides ticket statistics for a specific event, including breakdowns for tickets sold, reserved, available, and more.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
             description: >
-              Successful response containing statistics for the specified event.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/StatisticsReport'
-          '400':
-            $ref: '#/components/responses/BadRequest'
-          '401':
-            $ref: '#/components/responses/Unauthorized'
-          '404':
-            $ref: '#/components/responses/NotFound'
-          '500':
-            $ref: '#/components/responses/InternalServerError'
+              The unique identifier or slug for the event to retrieve statistics for.
+      security:
+        - privateOrganizerApiAuthFunction: []
+      responses:
+        '200':
+          description: >
+            Successful response containing statistics for the specified event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsReport'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /statistics/tours/{status}:
     get:
       summary: Retrieve statistics for tours by status
@@ -292,6 +293,8 @@ paths:
               - pastdue
           description: >
             The status of the tours to retrieve statistics for. Valid values are `published` or `pastdue`.
+      security:
+        - privateOrganizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -315,6 +318,8 @@ paths:
       summary: Retrieve statistics for a specific tour
       description: >
         Provides ticket statistics for a specific tour, aggregating data across all its events.
+      security:
+        - privateOrganizerApiAuthFunction: []
       parameters:
         - name: id
           in: path
@@ -344,6 +349,8 @@ paths:
       summary: Retrieve ticket statistics over a timeline
       description: >
         Provides ticket statistics for a specific event or tour over time, including tickets sold, returned, and invitations distributed.
+      security:
+        - privateOrganizerApiAuthFunction: []
       parameters:
         - name: id
           in: path
@@ -376,6 +383,8 @@ paths:
       description: >
         Provides detailed statistics about the devices used to interact with a specific event or tour. 
         Includes breakdown by device type (Mobile, Desktop, Tablet) along with usage percentages.
+      security:
+        - privateOrganizerApiAuthFunction: []
       parameters:
         - name: id
           in: path
@@ -437,6 +446,8 @@ paths:
       description: >
         Provides detailed geographic statistics for a specific event or tour. 
         Includes breakdowns by country and city along with interaction counts and percentages.
+      security:
+        - privateOrganizerApiAuthFunction: []
       parameters:
         - name: id
           in: path
@@ -506,6 +517,8 @@ paths:
             type: string
           description: >
             The unique identifier or slug of the event or tour for which conversion statistics are retrieved.
+      security:
+        - privateOrganizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -603,6 +616,8 @@ paths:
             - `all`: Retrieve consents for all events.
             - `published`: Retrieve consents for currently published events.
             - `pastdue`: Retrieve consents for events whose dates have passed.
+      security:
+        - privateOrganizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -662,6 +677,8 @@ paths:
             - `all`: Retrieve consents for all tours.
             - `published`: Retrieve consents for currently published tours.
             - `pastdue`: Retrieve consents for tours whose dates have passed.
+      security:
+        - privateOrganizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -714,6 +731,8 @@ paths:
             type: string
           description: >
             The unique identifier or slug of the event to retrieve client marketing consent information for.
+      security:
+        - privateOrganizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -768,6 +787,8 @@ paths:
             type: string
           description: >
             The unique identifier or slug of the tour to retrieve client marketing consent information for.
+      security:
+        - privateOrganizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -1112,11 +1133,10 @@ components:
           description: A human-readable error message.
   securitySchemes:
     privateOrganizerApiAuthFunction:
-      type: apiKey
-      name: Authorization
-      in: header
+      type: http
+      scheme: bearer
       description: >
-        Custom API key authorization header for accessing private organizer endpoints.
+        Custom Bearer token authentication for accessing private organizer endpoints.
       x-amazon-apigateway-authtype: custom
       x-amazon-apigateway-authorizer:
         authorizerUri: 

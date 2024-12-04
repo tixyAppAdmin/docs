@@ -1,0 +1,69 @@
+# TIXY Connect API Authorization
+
+## Overview
+
+TIXY Connect API employs **Bearer Token** authentication to secure access to both public and private APIs. Tokens are unique to each organizer and are configured via the TIXY organizer panel. Separate tokens are issued for accessing public and private APIs to ensure proper access control.
+
+### Key Features
+
+- **Bearer Token-Based**: Secure and simple token-based authentication.
+- **Separate Tokens**: Independent tokens for public and private APIs for granular access control.
+- **Configurable via Panel**: Organizers can generate and manage tokens in their TIXY panel.
+
+---
+
+## Token Management
+
+### Generating Tokens
+
+Organizers can generate and manage tokens from their panel on the TIXY platform:
+
+1. Log in to the TIXY platform.
+2. Navigate to **API Settings**.
+3. Select **Public API Token** or **Private API Token** based on requirements.
+4. Click **Generate Token** to create a new token.
+5. Save the generated token securely. (It will not be displayed again.)
+
+### Token Types
+
+| **Token Type**  | **Purpose**                                                                 | **Access Scope**              |
+|------------------|-----------------------------------------------------------------------------|--------------------------------|
+| **Public Token** | Used for accessing public API endpoints that require minimal authorization. | Limited, low-sensitivity data |
+| **Private Token**| Used for accessing private API endpoints that handle sensitive operations. | Full access to private data   |
+
+---
+
+## Using Tokens in API Requests
+
+Tokens must be included in the `Authorization` header of each API request.
+
+### Example: Public API Authorization
+
+#### Request Header:
+```http
+Authorization: Bearer {PUBLIC_API_TOKEN}
+```
+
+### Example: Private API Authorization
+
+#### Request Header:
+```http
+Authorization: Bearer {PRIVATE_API_TOKEN}
+```
+
+---
+
+## Best Practices
+
+- Keep tokens confidential and do not share them publicly.
+- Regularly rotate tokens to maintain security.
+- Use different tokens for different environments (development, staging, production).
+- Implement token revocation and regeneration mechanisms.
+
+---
+
+## Troubleshooting
+
+- **Invalid Token**: Ensure the token is correctly copied and matches the one generated in the TIXY panel.
+- **Access Denied**: Verify you are using the correct token type (public or private) for the intended API endpoint.
+- **Token Expiration**: Check if the token has been revoked or expired. Generate a new token if necessary.

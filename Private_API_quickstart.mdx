@@ -1,86 +1,153 @@
----
-title: 'Private API Quickstart'
-description: 'Start building awesome documentation in under 5 minutes'
----
+# TIXY Private Organizer API Quickstart
 
-## Setup your development
+## Overview
 
-Learn how to update your docs locally and deploy them to the public.
+The TIXY Private Organizer API provides a comprehensive set of endpoints for event organizers to manage their events, access sales reports, retrieve statistics, and handle marketing insights. This API is designed to give you deep insights into your events and tours.
 
-### Edit and preview
+## Authentication
 
-<AccordionGroup>
-  <Accordion icon="github" title="Clone your docs locally">
-    During the onboarding process, we created a repository on your Github with
-    your docs content. You can find this repository on our
-    [dashboard](https://dashboard.mintlify.com). To clone the repository
-    locally, follow these
-    [instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-    in your terminal.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Preview changes">
-    Previewing helps you make sure your changes look as intended. We built a
-    command line interface to render these changes locally. 1. Install the
-    [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the
-    documentation changes locally with this command: ``` npm i -g mintlify ```
-    2. Run the following command at the root of your documentation (where
-    `mint.json` is): ``` mintlify dev ```
-  </Accordion>
-</AccordionGroup>
+To access the Private Organizer API, you need to use a Bearer token authentication method:
 
-### Deploy your changes
+- **Authentication Type**: Bearer Token
+- **Header Format**: `Authorization: Bearer <your_access_token>`
 
-<AccordionGroup>
+### Obtaining Access Token
 
-<Accordion icon="message-bot" title="Install our Github app">
-  Our Github app automatically deploys your changes to your docs site, so you
-  don't need to manage deployments yourself. You can find the link to install on
-  your [dashboard](https://dashboard.mintlify.com). Once the bot has been
-  successfully installed, there should be a check mark next to the commit hash
-  of the repo.
-</Accordion>
-<Accordion icon="rocket" title="Push your changes">
-  [Commit and push your changes to
-  Git](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#about-git-push)
-  for your changes to update in your docs site. If you push and don't see that
-  the Github app successfully deployed your changes, you can also manually
-  update your docs through our [dashboard](https://dashboard.mintlify.com).
-</Accordion>
+Contact TIXY support to obtain your private API access token. Each token is unique to your organization and provides secure access to your event data.
 
-</AccordionGroup>
+## Base URL
 
-## Update your docs
+```
+https://private-api.tixyapp.com
+```
 
-Add content directly in your files with MDX syntax and React components. You can use any of our components, or even build your own.
+## API Endpoints
 
-<CardGroup>
+The Private Organizer API is organized into several key categories:
 
-<Card title="Style Your Docs" icon="paintbrush" href="/settings/global">
-  Add flair to your docs with personalized branding.
-</Card>
+### Sales Endpoints
 
-<Card
-  title="Add API Endpoints"
-  icon="square-code"
-  href="/api-playground/configuration"
->
-  Implement your OpenAPI spec and enable API user interaction.
-</Card>
+1. **Event Sales Reports**
+   - Retrieve sales report for a specific event
+   - Retrieve sales reports for events by status
+   - Endpoint: `/sales/event/{id}`, `/sales/events/{status}`
 
-<Card
-  title="Integrate Analytics"
-  icon="chart-mixed"
-  href="/analytics/supported-integrations"
->
-  Draw insights from user interactions with your documentation.
-</Card>
+2. **Tour Sales Reports**
+   - Retrieve sales data for a specific tour
+   - Retrieve sales reports for tours by status
+   - Endpoint: `/sales/tour/{id}`, `/sales/tours/{status}`
 
-<Card
-  title="Host on a Custom Domain"
-  icon="browser"
-  href="/settings/custom-domain/subdomain"
->
-  Keep your docs on your own website's subdomain.
-</Card>
+3. **Sales Terms**
+   - Get detailed sales terms and fees
+   - Endpoint: `/sales/terms`
 
+### Statistics Endpoints
+
+1. **Event Statistics**
+   - Retrieve ticket statistics for events
+   - Endpoint: `/statistics/events/{status}`, `/statistics/event/{id}`
+
+2. **Tour Statistics**
+   - Retrieve ticket statistics for tours
+   - Endpoint: `/statistics/tours/{status}`, `/statistics/tour/{id}`
+
+3. **Ticket Timeline**
+   - Get ticket sales and distribution over time
+   - Endpoint: `/statistics/tickets-timeline/{id}`
+
+### Marketing Insights Endpoints
+
+1. **Device Statistics**
+   - Analyze device usage for events and tours
+   - Endpoint: `/marketing/devices/{id}`
+
+2. **Geographic Statistics**
+   - Understand audience geographic distribution
+   - Endpoint: `/marketing/geography/{id}`
+
+3. **Conversion Statistics**
+   - Track fan and ticket conversion metrics
+   - Endpoint: `/marketing/conversion/{id}`
+
+4. **Marketing Consent**
+   - Retrieve marketing consent data for events and tours
+   - Endpoints: 
+     - `/marketing/clients-granted-consent/events/{status}`
+     - `/marketing/clients-granted-consent/tours/{status}`
+     - `/marketing/clients-granted-consent/event/{id}`
+     - `/marketing/clients-granted-consent/tour/{id}`
+
+## Example Request
+
+Here's an example of retrieving sales report for a specific event:
+
+```bash
+curl -X GET "https://private-api.tixyapp.com/sales/event/event123" \
+     -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+## Error Handling
+
+The API uses standard HTTP status codes:
+
+- `200 OK`: Successful request
+- `400 Bad Request`: Invalid parameters
+- `401 Unauthorized`: Authentication failed
+- `404 Not Found`: Resource not found
+- `500 Internal Server Error`: Server-side error
+
+Each error response includes:
+- `code`: A machine-readable error code
+- `message`: A human-readable error description
+
+## Rate Limits
+
+- Requests are limited to prevent abuse
+- Contact TIXY support for specific rate limit details
+
+## Support
+
+For further assistance, integration help, or questions about the Private Organizer API, please contact TIXY support.
+
+## Setting up
+
+The first step to world-class documentation is setting up your editing environments.
+
+<CardGroup cols={2}>
+  <Card
+    title="About TIXY connect"
+    icon="pen-to-square"
+    href="/introduction"
+  >
+    Get your docs set up locally for easy development
+  </Card>
+  <Card
+    title="Authorization"
+    icon="users"
+    href="/api-authorization"
+  >
+    Preview your changes before you push to make sure they're perfect
+  </Card>
+</CardGroup>
+
+## Avaliable APIs
+
+Update your docs to your brand and add valuable content for the best user conversion.
+
+<CardGroup cols={2}>
+  <Card
+    title="Private API"
+    icon="lock"
+    href="/private_API_quickstart"
+  >
+    Customize your docs to your company's colors and brands
+  </Card>
+  <Card
+    title="Public API"
+    icon="megaphone"
+    href="/public_API_quickstart"
+  >
+    Automatically generate endpoints from an OpenAPI spec
+  </Card>
+  
 </CardGroup>
