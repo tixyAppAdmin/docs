@@ -6,7 +6,7 @@
     "light": "/logo/logo-light.svg"
   },
   "theme": "prism", 
-  "openapi": "/privateOrganizerApi.yaml",
+  
   "favicon": "/logo/logo.svg",
   "colors": {
     "primary": "#5139ba",
@@ -42,7 +42,7 @@
          
           {
                 "group": "Quickstart",
-                "pages": ["private_API", "public_API"]
+                "pages": ["authorization", "private_API_quickstart", "public_API_quickstart"]
             }
       ]
     },
