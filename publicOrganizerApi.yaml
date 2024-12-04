@@ -6,7 +6,7 @@ info:
     The TIXY Public Organizer API allows public users to access event and tour data. 
     It includes endpoints to fetch event and tour details based on status or specific identifiers.
 servers:
-  - url: https://public.tixyapp.com
+  - url: https://public-api.tixyapp.com
 
 paths:
   /events/{status}:

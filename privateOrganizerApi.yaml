@@ -7,7 +7,7 @@ info:
     and handle secure interactions with clients. It includes CORS preflight support, event retrieval 
     by unique ID or slug, and integrates with AWS Lambda for custom backend processing.
 servers:
-  - url: https://private.tixyapp.com
+  - url: https://private-api.tixyapp.com
 
 paths:
 
