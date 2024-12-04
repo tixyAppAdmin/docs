@@ -53,17 +53,36 @@
            
             {
                 "group": "Sales endpoints",
-                "pages": ["retrieve-all-events", "retrieve-event-details"]
+                "pages": [
+                  "retrieve-sales-data-for-events-by-status",
+                  "retrieve-sales-data-for-a-specific-event",
+                   "retrieve-sales-data-for-tours-by-status",
+        "retrieve-sales-data-for-a-specific-tour",   "retrieve-sales-terms-and-fees"
+     
+                ]       
             },
             
             {
                 "group": "Statistics endpoints",
-                "pages": ["retrieve-all-events1", "retrieve-event-details1"]
+                "pages": [
+                  "retrieve-statistics-for-events-by-status",
+                  "retrieve-statistics-for-a-specific-event",
+                  "retrieve-statistics-for-tours-by-status",
+                  "retrieve-statistics-for-a-specific-tour",
+                  "retrieve-ticket-statistics-over-a-timeline"
+                ]
             },
        
             {
                 "group": "Marketing endpoints",
-                "pages": ["retrieve-all-events2", "retrieve-event-details2"]
+                "pages": [ "retrieve-device-statistics-for-a-specific-event-or-tour",
+                            "retrieve-geographic-statistics-for-a-specific-event-or-tour",
+                            "retrieve-conversion-statistics-for-a-specific-event-or-tour",
+                            "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
+                            "retrieve-clients-who-granted-consent-for-marketing-for-tours-by-status",
+                            "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-event",
+                            "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-tour"
+                ]
             }
 
         ]
@@ -71,8 +90,10 @@
   }, {
     "group": "Public API Reference",
     "pages": [
-      "retrieve-all-events",
-      "retrieve-event-details"
+      "retrieve-public-events-by-status",
+      "retrieve-details-for-a-specific-public-event",
+      "retrieve-public-tours-by-status",
+      "retrieve-details-for-a-specific-public-tour"
      
     ]
     
