@@ -1,0 +1,226 @@
+---
+title: 'Public API Quickstart' 
+description: 'Get started quickly with the TIXY Public Organizer API'
+---
+
+# TIXY Public Organizer API Quickstart
+
+## Overview
+
+The TIXY Public Organizer API provides public access to event and tour data, allowing you to retrieve information about published and past due events and tours.
+
+## Base URL
+
+```
+https://public-api.tixyapp.com
+```
+
+## Authentication
+
+The API uses Bearer token authentication. You'll need to include an authorization token in the request header:
+
+```http
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
+
+## Available Endpoints
+
+### Events
+
+#### Retrieve Events by Status
+
+`GET /events/{status}`
+
+Retrieve a list of events filtered by their status.
+
+**Path Parameters:**
+- `status`: Filter events by their current state
+  - `all`: Retrieve all events
+  - `published`: Retrieve currently published events
+  - `pastdue`: Retrieve past due events
+
+**Example Request:**
+```bash
+curl https://public-api.tixyapp.com/events/published \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+**Example Response:**
+```json
+[
+  {
+    "id": "event123",
+    "name": "Summer Music Festival",
+    "date": "2024-07-15T19:00:00Z",
+    "location": "City Park Arena",
+    "description": "Annual summer music celebration",
+    "status": "published"
+  }
+]
+```
+
+#### Retrieve Specific Event Details
+
+`GET /event/{id}`
+
+Retrieve details for a specific event by its unique identifier or slug.
+
+**Path Parameters:**
+- `id`: Unique identifier or slug of the event
+
+**Example Request:**
+```bash
+curl https://public-api.tixyapp.com/event/summer-music-festival \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+**Example Response:**
+```json
+{
+  "id": "event123",
+  "name": "Summer Music Festival",
+  "date": "2024-07-15T19:00:00Z",
+  "location": "City Park Arena",
+  "description": "Annual summer music celebration",
+  "status": "published"
+}
+```
+
+### Tours
+
+#### Retrieve Tours by Status
+
+`GET /tours/{status}`
+
+Retrieve a list of tours filtered by their status.
+
+**Path Parameters:**
+- `status`: Filter tours by their current state
+  - `all`: Retrieve all tours
+  - `published`: Retrieve currently published tours
+  - `pastdue`: Retrieve past due tours
+
+**Example Request:**
+```bash
+curl https://public-api.tixyapp.com/tours/published \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+**Example Response:**
+```json
+[
+  {
+    "id": "tour456",
+    "name": "Summer Concert Series",
+    "events": [
+      {
+        "id": "event123",
+        "name": "Summer Music Festival",
+        "date": "2024-07-15T19:00:00Z",
+        "location": "City Park Arena",
+        "status": "published"
+      }
+    ],
+    "description": "A series of summer music events",
+    "status": "published"
+  }
+]
+```
+
+#### Retrieve Specific Tour Details
+
+`GET /tour/{id}`
+
+Retrieve details for a specific tour by its unique identifier or slug.
+
+**Path Parameters:**
+- `id`: Unique identifier or slug of the tour
+
+**Example Request:**
+```bash
+curl https://public-api.tixyapp.com/tour/summer-concert-series \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+**Example Response:**
+```json
+{
+  "id": "tour456",
+  "name": "Summer Concert Series",
+  "events": [
+    {
+      "id": "event123",
+      "name": "Summer Music Festival",
+      "date": "2024-07-15T19:00:00Z",
+      "location": "City Park Arena",
+      "status": "published"
+    }
+  ],
+  "description": "A series of summer music events",
+  "status": "published"
+}
+```
+
+## Error Handling
+
+The API uses standard HTTP status codes to indicate the success or failure of requests:
+
+- `200 OK`: Successful request
+- `400 Bad Request`: Invalid parameters or malformed request
+- `404 Not Found`: Requested resource does not exist
+- `500 Internal Server Error`: Unexpected server-side error
+
+**Example Error Response:**
+```json
+{
+  "message": "Event not found",
+  "code": "NOT_FOUND"
+}
+```
+
+## Rate Limiting
+
+Please be mindful of the API's rate limits. Excessive requests may result in temporary blocking of your access token.
+
+## Setting up
+
+The first step to world-class documentation is setting up your editing environments.
+
+<CardGroup cols={2}>
+  <Card
+    title="About TIXY connect"
+    icon="pen-to-square"
+    href="/introduction"
+  >
+    Get your docs set up locally for easy development
+  </Card>
+  <Card
+    title="Authorization"
+    icon="users"
+    href="/api-authorization"
+  >
+    Preview your changes before you push to make sure they're perfect
+  </Card>
+</CardGroup>
+
+## Avaliable APIs
+
+Update your docs to your brand and add valuable content for the best user conversion.
+
+<CardGroup cols={2}>
+  <Card
+    title="Private API"
+    icon="lock"
+    href="/private_API_quickstart"
+  >
+    Customize your docs to your company's colors and brands
+  </Card>
+  <Card
+    title="Public API"
+    icon="megaphone"
+    href="/public_API_quickstart"
+  >
+    Automatically generate endpoints from an OpenAPI spec
+  </Card>
+  
+</CardGroup>
