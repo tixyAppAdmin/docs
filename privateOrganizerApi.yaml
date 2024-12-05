@@ -230,6 +230,8 @@ paths:
               - pastdue
           description: >
             The status of the events to retrieve statistics for. Valid values are `published` or `pastdue`.
+      security:
+        - privateOrganizerApiAuthFunction: []
       responses:
         '200':
           description: >
