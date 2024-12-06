@@ -6,6 +6,10 @@
     "light": "/logo/logo-light.svg"
   },
   "theme": "prism", 
+  "modeToggle": {
+    "default": "dark",
+    "isHidden": false
+  },
   
   "favicon": "/logo/logo.svg",
   "colors": {

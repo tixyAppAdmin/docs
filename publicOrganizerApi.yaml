@@ -31,7 +31,7 @@ paths:
             - `published`: Retrieve currently published events.
             - `pastdue`: Retrieve past due events.
       security:
-        - publicOrganizerApiAuthFunction: []
+        - organizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -61,7 +61,7 @@ paths:
           description: >
             The unique identifier or slug of the event to retrieve.
       security:
-        - publicOrganizerApiAuthFunction: []
+        - organizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -99,7 +99,7 @@ paths:
             - `published`: Retrieve currently published tours.
             - `pastdue`: Retrieve past due tours.
       security:
-        - publicOrganizerApiAuthFunction: []
+        - organizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -129,7 +129,7 @@ paths:
           description: >
             The unique identifier or slug of the tour to retrieve.
       security:
-        - publicOrganizerApiAuthFunction: []
+        - organizerApiAuthFunction: []
       responses:
         '200':
           description: >
@@ -190,7 +190,7 @@ components:
           type: string
           description: Current status of the tour (e.g., published, pastdue).
   securitySchemes:
-    publicOrganizerApiAuthFunction:
+    organizerApiAuthFunction:
       type: http
       scheme: bearer
       description: >
@@ -199,7 +199,7 @@ components:
       x-amazon-apigateway-authorizer:
         authorizerUri: 
           uri: 
-            Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${publicOrganizerApiAuthFunction.Arn}/invocations
+            Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiAuthFunction.Arn}/invocations
         authorizerResultTtlInSeconds: 300
         identitySource: method.request.header.Authorization
   responses:

@@ -53,7 +53,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       x-amazon-apigateway-integration:
         uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${privateOrganizerApiEndpointFunction.Arn}/invocations
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiAuthFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
   /sales/events/{status}:
@@ -99,7 +99,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       x-amazon-apigateway-integration:
         uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${privateOrganizerApiEndpointFunction.Arn}/invocations
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiAuthFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy 
   /sales/tour/{id}:
@@ -144,7 +144,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       x-amazon-apigateway-integration:
         uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${privateOrganizerApiEndpointFunction.Arn}/invocations
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiAuthFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
   /sales/tours/{status}:
@@ -211,7 +211,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       x-amazon-apigateway-integration:
         uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${privateOrganizerApiEndpointFunction.Arn}/invocations
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiAuthFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
   /statistics/events/{status}:
@@ -1143,7 +1143,7 @@ components:
       x-amazon-apigateway-authorizer:
         authorizerUri: 
           uri: 
-            Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${privateOrganizerApiAuthFunction.Arn}/invocations
+            Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiAuthFunction.Arn}/invocations
         authorizerResultTtlInSeconds: 300
         identitySource: method.request.header.Authorization
   responses:
