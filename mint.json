@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "API Developer",
+  "name": "TIXY connect API",
   "logo": {
     "dark": "/logo/logo-dark.svg",
     "light": "/logo/logo-light.svg"
