@@ -1,0 +1,130 @@
+openapi: 3.0.1
+info:
+  title: TIXY Private Organizer API
+  version: 1.0.0
+  description: >
+    The TIXY Private Organizer API provides endpoints for event organizers to manage their events 
+    and handle secure interactions with clients. It includes CORS preflight support, event retrieval 
+    by unique ID or slug, and integrates with AWS Lambda for custom backend processing.
+servers:
+  - url: https://private-api.tixyapp.com
+
+paths:
+  /sales/event:
+    get:
+      summary: Retrieve sales report for a specific event
+      description: >
+        Fetches detailed sales report for a specific event identified by either its unique identifier 
+        or SEO-friendly slug. This endpoint requires authentication and provides information 
+        such as the number of tickets sold, net and gross income, fees, and other relevant sales metrics 
+        for the specified event.
+      parameters:
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
+          schema:
+            type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
+          description: >
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
+      security:
+        - privateOrganizerApiAuthFunction: []
+      responses:
+        '200':
+          description: >
+            Successful response containing sales report for the specified event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventSalesReport'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      x-amazon-apigateway-integration:
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
+        httpMethod: POST
+        type: aws_proxy
+
+  /sales/tour:
+    get:
+      summary: Retrieve sales data for a specific tour
+      description: >
+        Fetches detailed sales data for a specific tour identified by either its unique identifier 
+        or SEO-friendly slug. Includes aggregated data for all events within the tour 
+        as well as details for each event.
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the tour. Must be a 24-character hexadecimal string.
+          schema:
+            type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: tourSlug
+          in: query
+          required: false
+          description: >
+            The SEO-friendly slug for the tour. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
+      security:
+        - privateOrganizerApiAuthFunction: []
+      responses:
+        '200':
+          description: >
+            Successful response containing sales data for the specified tour.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TourSalesReport'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      x-amazon-apigateway-integration:
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
+        httpMethod: POST
+        type: aws_proxy
+
+  # Rest of the file remains unchanged (other endpoints)
+  /sales/events:
+    get:
+      summary: Retrieve sales report for events by status
+      description: >
+        Returns detailed sales report for events based on the specified status. 
+        This endpoint requires authentication and provides an overview of the event's 
+        sales performance, including the number of tickets sold, net and gross income, 
+        fees, and other relevant sales metrics.
+      parameters:
+        - name: status
+          in: query
+          required: true
+          description: >
+            The status of the events to retrieve sales report for. Valid values are:
+            - `all`: Fetch sales report for all events.
+            - `published`: Fetch sales report for events currently published.
+            - `pastdue`: Fetch sales report for events whose dates have passed.
+          schema:
+            type: string
+            enum:

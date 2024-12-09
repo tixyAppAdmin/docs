@@ -9,7 +9,7 @@ servers:
   - url: https://public-api.tixyapp.com
 
 paths:
-  /events/{status}:
+  /events:
     get:
       summary: Retrieve public events by status
       description: >
@@ -17,19 +17,21 @@ paths:
         Allows users to view events that are currently published, past due, or all available events.
       parameters:
         - name: status
-          in: path
-          required: true
+          in: query
+          required: false
+          description: >
+            The status of the events to retrieve sales report for. If not specified, it defaults to `all`. 
+            Valid values are:
+              - `all`: Fetch sales report for all events.
+              - `published`: Fetch sales report for events currently published.
+              - `pastdue`: Fetch sales report for events whose dates have passed.
+      
           schema:
             type: string
             enum:
               - all
               - published
               - pastdue
-          description: >
-            The status of the events to retrieve. Valid values are:
-            - `all`: Retrieve all events.
-            - `published`: Retrieve currently published events.
-            - `pastdue`: Retrieve past due events.
       security:
         - organizerApiAuthFunction: []
       responses:
@@ -51,19 +53,28 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPublicEndpointsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /event/{id}:
+  /event:
     get:
       summary: Retrieve details for a specific public event
       description: >
         Fetches the details for a specific public event identified by its unique identifier or slug.
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
           schema:
             type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
           description: >
-            The unique identifier or slug of the event to retrieve.
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       security:
         - organizerApiAuthFunction: []
       responses:
@@ -85,8 +96,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPublicEndpointsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-
-  /tours/{status}:
+  /tours:
     get:
       summary: Retrieve public tours by status
       description: >
@@ -94,19 +104,21 @@ paths:
         Allows users to view tours that are currently published, past due, or all available tours.
       parameters:
         - name: status
-          in: path
-          required: true
+          in: query
+          required: false
+          description: >
+            The status of the tours to retrieve sales report for. If not specified, it defaults to `all`. 
+            Valid values are:
+              - `all`: Fetch sales report for all tours.
+              - `published`: Fetch sales report for tours currently published.
+              - `pastdue`: Fetch sales report for tours whose dates have passed.
+      
           schema:
             type: string
             enum:
               - all
               - published
               - pastdue
-          description: >
-            The status of the tours to retrieve. Valid values are:
-            - `all`: Retrieve all tours.
-            - `published`: Retrieve currently published tours.
-            - `pastdue`: Retrieve past due tours.
       security:
         - organizerApiAuthFunction: []
       responses:
@@ -128,20 +140,28 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPublicEndpointsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-
-  /tour/{id}:
+  /tour:
     get:
       summary: Retrieve details for a specific public tour
       description: >
         Fetches the details for a specific public tour identified by its unique identifier or slug.
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: tourId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the tour. Must be a 24-character hexadecimal string.
           schema:
             type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: tourSlug
+          in: query
+          required: false
           description: >
-            The unique identifier or slug of the tour to retrieve.
+            The SEO-friendly slug for the tour. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       security:
         - organizerApiAuthFunction: []
       responses:
@@ -182,7 +202,7 @@ components:
           properties:
             isTicketResselingEnabled:
               type: boolean
-              example: false
+              
               description: "Indicates if ticket reselling is enabled."
             tickets:
               type: array
@@ -261,7 +281,7 @@ components:
           properties:
             ageLimit:
               type: string
-              example: "0"
+             
         description:
           type: string
           description: "Detailed information about an event."
@@ -270,24 +290,24 @@ components:
       properties:
         name:
           type: string
-          example: "Bilet 1"
+          
         description:
           type: string
-          example: "bilet 1"
+          
         id:
           type: string
           format: uuid
-          example: "0b090e56-5895-499d-a3ee-ebc79c385112"
+          
         ticketPools:
           type: array
           items:
             $ref: '#/components/schemas/TicketPool'
         isSinglePoolTicket:
           type: boolean
-          example: true
+       
         shouldDisplayTicketName:
           type: boolean
-          example: true
+
     TicketPool:
       type: object
       properties:
@@ -296,26 +316,23 @@ components:
           properties:
             start:
               type: string
-              example: ""
+            
             hasEndDate:
               type: boolean
-              example: false
+              
             end:
               type: string
-              example: ""
+            
             hasStartDate:
               type: boolean
-              example: false
+              
         id:
           type: string
           format: uuid
-          example: "9e2dc72f-f284-4e9b-acc8-76cd71993628"
         salesActive:
           type: boolean
-          example: true
         price:
           type: string
-          example: "1"
     PublicTour:
       type: object
       properties:

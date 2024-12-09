@@ -10,7 +10,7 @@ servers:
   - url: https://private-api.tixyapp.com
 
 paths:
-  /sales/event/{id}:
+  /sales/event:
     get:
       summary: Retrieve sales report for a specific event
       description: >
@@ -19,20 +19,22 @@ paths:
         such as the number of tickets sold, net and gross income, fees, and other relevant sales metrics 
         for the specified event.
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: eventId
+          in: query
+          required: false
           description: >
-            The unique identifier (`eventId`) or SEO-friendly slug (`eventSlug`) for the event. 
-            Accepts either a MongoDB ObjectId or a valid SEO-friendly slug.
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
           schema:
-            oneOf:
-              - type: string
-                pattern: '^[a-f0-9]{24}$'
-                description: MongoDB ObjectId format for `eventId`.
-              - type: string
-                pattern: '^[a-zA-Z0-9-_\\.]+$'
-                description: Valid format for an SEO-friendly `eventSlug`.
+            type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
+          description: >
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -56,7 +58,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /sales/events/{status}:
+  /sales/events:
     get:
       summary: Retrieve sales report for events by status
       description: >
@@ -66,13 +68,15 @@ paths:
         fees, and other relevant sales metrics.
       parameters:
         - name: status
-          in: path
-          required: true
+          in: query
+          required: false
           description: >
-            The status of the events to retrieve sales report for. Valid values are:
-            - `all`: Fetch sales report for all events.
-            - `published`: Fetch sales report for events currently published.
-            - `pastdue`: Fetch sales report for events whose dates have passed.
+            The status of the events to retrieve sales report for. If not specified, it defaults to `all`. 
+            Valid values are:
+              - `all`: Fetch sales report for all events.
+              - `published`: Fetch sales report for events currently published.
+              - `pastdue`: Fetch sales report for events whose dates have passed.
+      
           schema:
             type: string
             enum:
@@ -102,7 +106,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy 
-  /sales/tour/{id}:
+  /sales/tour:
     get:
       summary: Retrieve sales data for a specific tour
       description: >
@@ -110,20 +114,22 @@ paths:
         or SEO-friendly slug (`tourSlug`). Includes aggregated data for all events within the tour 
         as well as details for each event.
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: tourId
+          in: query
+          required: false
           description: >
-            The unique identifier (`tourId`) or SEO-friendly slug (`tourSlug`) for the tour. 
-            Accepts either a MongoDB ObjectId or a valid SEO-friendly slug.
+            The unique identifier for the tour. Must be a 24-character hexadecimal string.
           schema:
-            oneOf:
-              - type: string
-                pattern: '^[a-f0-9]{24}$'
-                description: MongoDB ObjectId format for `tourId`.
-              - type: string
-                pattern: '^[a-zA-Z0-9-_\\.]+$'
-                description: Valid format for an SEO-friendly `tourSlug`.
+            type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: tourSlug
+          in: query
+          required: false
+          description: >
+            The SEO-friendly slug for the tour. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -147,22 +153,26 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /sales/tours/{status}:
+  /sales/tours:
     get:
       summary: Retrieve sales report for tours by status
       description: >
         Fetches detailed sales report for all tours with the specified status.
       parameters:
         - name: status
-          in: path
-          required: true
+          in: query
+          required: false
           description: >
-            The status of the tours to retrieve sales report for. Valid values are:
-            - `published`: Fetch sales report for tours currently published.
-            - `pastdue`: Fetch sales report for tours whose dates have passed.
+            The status of the tours to retrieve sales report for. If not specified, it defaults to `all`. 
+            Valid values are:
+              - `all`: Fetch sales report for all tours.
+              - `published`: Fetch sales report for tours currently published.
+              - `pastdue`: Fetch sales report for tours whose dates have passed.
+      
           schema:
             type: string
             enum:
+              - all
               - published
               - pastdue
       security:
@@ -219,22 +229,28 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /statistics/events/{status}:
+  /statistics/events:
     get:
       summary: Retrieve statistics for events by status
       description: >
         Provides ticket statistics for events filtered by status (e.g., published, pastdue).
       parameters:
         - name: status
-          in: path
-          required: true
+          in: query
+          required: false
+          description: >
+            The status of the events to retrieve sales report for. If not specified, it defaults to `all`. 
+            Valid values are:
+              - `all`: Fetch sales report for all events.
+              - `published`: Fetch sales report for events currently published.
+              - `pastdue`: Fetch sales report for events whose dates have passed.
+      
           schema:
             type: string
             enum:
+              - all
               - published
               - pastdue
-          description: >
-            The status of the events to retrieve statistics for. Valid values are `published` or `pastdue`.
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -258,19 +274,28 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /statistics/event/{id}:
+  /statistics/event:
     get:
       summary: Retrieve statistics for a specific event
       description: >
         Provides ticket statistics for a specific event, including breakdowns for tickets sold, reserved, available, and more.
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
           schema:
             type: string
-            description: >
-              The unique identifier or slug for the event to retrieve statistics for.
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
+          description: >
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -294,22 +319,28 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /statistics/tours/{status}:
+  /statistics/tours:
     get:
       summary: Retrieve statistics for tours by status
       description: >
         Provides ticket statistics for tours filtered by status (e.g., published, pastdue).
       parameters:
         - name: status
-          in: path
-          required: true
+          in: query
+          required: false
+          description: >
+            The status of the tours to retrieve sales report for. If not specified, it defaults to `all`. 
+            Valid values are:
+              - `all`: Fetch sales report for all tours.
+              - `published`: Fetch sales report for tours currently published.
+              - `pastdue`: Fetch sales report for tours whose dates have passed.
+      
           schema:
             type: string
             enum:
+              - all
               - published
               - pastdue
-          description: >
-            The status of the tours to retrieve statistics for. Valid values are `published` or `pastdue`.
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -335,7 +366,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /statistics/tour/{id}:
+  /statistics/tour:
     get:
       summary: Retrieve statistics for a specific tour
       description: >
@@ -343,13 +374,22 @@ paths:
       security:
         - privateOrganizerApiAuthFunction: []
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: tourId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the tour. Must be a 24-character hexadecimal string.
           schema:
             type: string
-            description: >
-              The unique identifier or slug for the tour to retrieve statistics for.
+            pattern: '^[a-f0-9]{24}$'
+        - name: tourSlug
+          in: query
+          required: false
+          description: >
+            The SEO-friendly slug for the tour. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       responses:
         '200':
           description: >
@@ -371,7 +411,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /statistics/tickets-timeline/{id}:
+  /statistics/tickets-timeline:
     get:
       summary: Retrieve ticket statistics over a timeline
       description: >
@@ -379,13 +419,22 @@ paths:
       security:
         - privateOrganizerApiAuthFunction: []
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
           schema:
             type: string
-            description: >
-              The unique identifier or slug for the event or tour to retrieve ticket timeline statistics for.
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
+          description: >
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       responses:
         '200':
           description: >
@@ -409,7 +458,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/devices/{id}:
+  /marketing/devices:
     get:
       summary: Retrieve device statistics for a specific event or tour
       description: >
@@ -418,13 +467,22 @@ paths:
       security:
         - privateOrganizerApiAuthFunction: []
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
           schema:
             type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
           description: >
-            The unique identifier or slug of the event or tour for which device statistics are retrieved.
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       responses:
         '200':
           description: >
@@ -477,7 +535,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/geography/{id}:
+  /marketing/geography:
     get:
       summary: Retrieve geographic statistics for a specific event or tour
       description: >
@@ -486,13 +544,22 @@ paths:
       security:
         - privateOrganizerApiAuthFunction: []
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
           schema:
             type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
           description: >
-            The unique identifier or slug of the event or tour for which geographic statistics are retrieved.
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       responses:
         '200':
           description: >
@@ -545,20 +612,29 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/conversion/{id}:
+  /marketing/conversion:
     get:
       summary: Retrieve conversion statistics for a specific event or tour
       description: >
         Provides detailed conversion statistics for a specific event or tour. 
         Includes both Fans Conversion and Tickets Conversion metrics.
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
           schema:
             type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
           description: >
-            The unique identifier or slug of the event or tour for which conversion statistics are retrieved.
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -642,7 +718,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/clients-granted-consent/events/{status}:
+  /marketing/clients-granted-consent/events:
     get:
       summary: Retrieve clients who granted consent for marketing for events by status
       description: >
@@ -650,19 +726,21 @@ paths:
         Includes metrics such as total users, users who granted consent, users who revoked consent, and percentages.
       parameters:
         - name: status
-          in: path
-          required: true
+          in: query
+          required: false
+          description: >
+            The status of the events to retrieve sales report for. If not specified, it defaults to `all`. 
+            Valid values are:
+              - `all`: Fetch sales report for all events.
+              - `published`: Fetch sales report for events currently published.
+              - `pastdue`: Fetch sales report for events whose dates have passed.
+      
           schema:
             type: string
             enum:
               - all
               - published
               - pastdue
-          description: >
-            The status of the events to retrieve client marketing consent information for. Valid values are:
-            - `all`: Retrieve consents for all events.
-            - `published`: Retrieve consents for currently published events.
-            - `pastdue`: Retrieve consents for events whose dates have passed.
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -708,7 +786,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/clients-granted-consent/tours/{status}:
+  /marketing/clients-granted-consent/tours:
     get:
       summary: Retrieve clients who granted consent for marketing for tours by status
       description: >
@@ -716,19 +794,21 @@ paths:
         Includes metrics such as total users, users who granted consent, users who revoked consent, and percentages.
       parameters:
         - name: status
-          in: path
-          required: true
+          in: query
+          required: false
+          description: >
+            The status of the tours to retrieve sales report for. If not specified, it defaults to `all`. 
+            Valid values are:
+              - `all`: Fetch sales report for all tours.
+              - `published`: Fetch sales report for tours currently published.
+              - `pastdue`: Fetch sales report for tours whose dates have passed.
+      
           schema:
             type: string
             enum:
               - all
               - published
               - pastdue
-          description: >
-            The status of the tours to retrieve client marketing consent information for. Valid values are:
-            - `all`: Retrieve consents for all tours.
-            - `published`: Retrieve consents for currently published tours.
-            - `pastdue`: Retrieve consents for tours whose dates have passed.
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -774,20 +854,29 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/clients-granted-consent/event/{id}:
+  /marketing/clients-granted-consent/event:
     get:
       summary: Retrieve clients who granted consent for marketing for a specific event
       description: >
         Retrieves a list of clients who have granted consent for marketing purposes for a specific event.
         Includes metrics such as total users, users who granted consent, users who revoked consent, and percentages.
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string.
           schema:
             type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: eventSlug
+          in: query
+          required: false
           description: >
-            The unique identifier or slug of the event to retrieve client marketing consent information for.
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -835,20 +924,29 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/clients-granted-consent/tour/{id}:
+  /marketing/clients-granted-consent/tour:
     get:
       summary: Retrieve clients who granted consent for marketing for a specific tour
       description: >
         Retrieves a list of clients who have granted consent for marketing purposes for a specific tour.
         Includes metrics such as total users, users who granted consent, users who revoked consent, and percentages.
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: tourId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the tour. Must be a 24-character hexadecimal string.
           schema:
             type: string
+            pattern: '^[a-f0-9]{24}$'
+        - name: tourSlug
+          in: query
+          required: false
           description: >
-            The unique identifier or slug of the tour to retrieve client marketing consent information for.
+            The SEO-friendly slug for the tour. Accepts alphanumeric characters, hyphens, underscores, and periods.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -1262,7 +1360,7 @@ components:
           properties:
             isTicketResselingEnabled:
               type: boolean
-              example: false
+              
               description: "Indicates if ticket reselling is enabled."
             tickets:
               type: array
@@ -1341,7 +1439,7 @@ components:
           properties:
             ageLimit:
               type: string
-              example: "0"
+        
         description:
           type: string
           description: "Detailed information about an event."
@@ -1350,24 +1448,24 @@ components:
       properties:
         name:
           type: string
-          example: "Bilet 1"
+          
         description:
           type: string
-          example: "bilet 1"
+         
         id:
           type: string
           format: uuid
-          example: "0b090e56-5895-499d-a3ee-ebc79c385112"
+          
         ticketPools:
           type: array
           items:
             $ref: '#/components/schemas/TicketPool'
         isSinglePoolTicket:
           type: boolean
-          example: true
+          
         shouldDisplayTicketName:
           type: boolean
-          example: true
+          
     TicketPool:
       type: object
       properties:
@@ -1376,26 +1474,26 @@ components:
           properties:
             start:
               type: string
-              example: ""
+              
             hasEndDate:
               type: boolean
-              example: false
+              
             end:
               type: string
-              example: ""
+              
             hasStartDate:
               type: boolean
-              example: false
+              
         id:
           type: string
           format: uuid
-          example: "9e2dc72f-f284-4e9b-acc8-76cd71993628"
+    
         salesActive:
           type: boolean
-          example: true
+          
         price:
           type: string
-          example: "1"
+          
     Error:
       type: object
       description: Represents an error response.
