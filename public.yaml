@@ -41,7 +41,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PublicEvent'
+                  $ref: '#/components/schemas/Event'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -73,7 +73,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublicEvent'
+                $ref: '#/components/schemas/Event'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -166,28 +166,156 @@ paths:
 
 components:
   schemas:
-    PublicEvent:
+    Event:
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier for the event.
-        name:
-          type: string
-          description: Name of the event.
-        date:
-          type: string
-          format: date-time
-          description: Date and time of the event.
-        location:
-          type: string
-          description: Venue or location of the event.
-        description:
-          type: string
-          description: A short description of the event.
+        social:
+          type: object
+          properties:
+            links:
+              type: array
+              items:
+                type: string
+          description: "Social media links for the event."
+        tickets:
+          type: object
+          properties:
+            isTicketResselingEnabled:
+              type: boolean
+              example: false
+              description: "Indicates if ticket reselling is enabled."
+            tickets:
+              type: array
+              items:
+                $ref: '#/components/schemas/Ticket'
+          description: "Details of tickets associated with the event."
+        dates:
+          type: object
+          properties:
+            scanning:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date-time
+                end:
+                  type: string
+                  format: date-time
+              description: "Dates for ticket scanning."
+            end:
+              type: string
+              format: date-time
+            openings:
+              type: array
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date-time
+                  id:
+                    type: string
+                    format: uuid
+          description: "Event date details."
         status:
           type: string
-          description: Current status of the event (e.g., published, pastdue).
+          description: "Status of the event."
+        types:
+          type: array
+          items:
+            type: string
+          description: "Event types or categories."
+        visibility:
+          type: string
+          description: "Visibility of the event."
+        allowResale:
+          type: boolean
+          description: "Indicates if ticket resale is allowed."
+        name:
+          type: string
+          description: "Name of the event."
+        artistsDetails:
+          type: string
+          nullable: true
+          description: "Details of artists performing at the event."
+        publishTime:
+          type: string
+          format: date-time
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          description: "URL-friendly identifier for the event."
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        category:
+          type: string
+          description: "Category of the event."
+        restrictions:
+          type: object
+          properties:
+            ageLimit:
+              type: string
+              example: "0"
+        description:
+          type: string
+          description: "Detailed information about an event."
+    Ticket:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Bilet 1"
+        description:
+          type: string
+          example: "bilet 1"
+        id:
+          type: string
+          format: uuid
+          example: "0b090e56-5895-499d-a3ee-ebc79c385112"
+        ticketPools:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketPool'
+        isSinglePoolTicket:
+          type: boolean
+          example: true
+        shouldDisplayTicketName:
+          type: boolean
+          example: true
+    TicketPool:
+      type: object
+      properties:
+        salesDates:
+          type: object
+          properties:
+            start:
+              type: string
+              example: ""
+            hasEndDate:
+              type: boolean
+              example: false
+            end:
+              type: string
+              example: ""
+            hasStartDate:
+              type: boolean
+              example: false
+        id:
+          type: string
+          format: uuid
+          example: "9e2dc72f-f284-4e9b-acc8-76cd71993628"
+        salesActive:
+          type: boolean
+          example: true
+        price:
+          type: string
+          example: "1"
     PublicTour:
       type: object
       properties:
@@ -201,7 +329,7 @@ components:
           type: array
           description: List of events included in the tour.
           items:
-            $ref: '#/components/schemas/PublicEvent'
+            $ref: '#/components/schemas/Event'
         description:
           type: string
           description: A short description of the tour.

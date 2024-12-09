@@ -901,94 +901,173 @@ components:
     TourSalesReport:
       type: object
       properties:
-        tour_id:
+        id:
           type: string
-          description: Unique identifier for the tour.
-        tour_name:
+          description: Unique identifier for the event.
+        name:
           type: string
-          description: Name of the tour.
-        tours_count:
-          type: integer
-          description: Total number of events in the tour.
-        total_tickets_sold:
-          type: integer
-          description: Total number of tickets sold across all events in the tour.
-        total_gross_income:
-          type: number
-          format: float
-          description: Total gross income across all events in the tour.
-        total_net_income:
-          type: number
-          format: float
-          description: Total net income across all events in the tour after deductions.
-        total_fees:
+          description: Name of the event.
+        slug:
+          type: string
+          description: Unique identifier for the event.
+        vatRate:
+          type: string
+          description: VAT rate for the event.
+        income:
+          type: object
+          description: Default service charge structure paid by ticket buyers.
+          properties:
+            nettIncome:
+              type: number
+              format: float
+              description: Net income.
+            grossIncome:
+              type: number
+              format: float
+              description: Gross income.
+            vatAmount:
+              type: number
+              format: float
+              description: VAT amount.
+        commission:
           type: object
           properties:
-            service_fee:
+            amount: 
               type: number
               format: float
-              description: Total service fee applied across all events in the tour.
-            tax:
+              description: Commission amount.
+            percentage:
               type: number
               format: float
-              description: Total tax applied across all events in the tour.
-        status:
-          type: string
-          description: Current status of the tour (e.g., `published`, `pastdue`).
-        events:
-          type: array
-          description: Details of the events included in the tour.
-          items:
-            $ref: '#/components/schemas/EventSalesReport'
+              description: Gross income percentage.
+        returns: 
+          type: object
+          properties:
+            nettReturns:
+              type: number
+              format: float
+              description: Net returns.
+            grossReturns:
+              type: number  
+              format: float
+              description: Gross returns.
+            returnedTicketsCount:
+              type: number
+              format: float
+              description: Returned tickets count.
+            returnedTicketsPercentage:
+              type: number
+              format: float
+              description: Returned tickets percentage.
       required:
-        - tour_id
-        - tour_name
-        - events_count
-        - total_tickets_sold
-        - total_gross_income
-        - total_net_income
-        - total_fees
+        - id
+        - name
+        - slug
+        - income
+        - commission
+        - returns
     EventSalesReport:
       type: object
       properties:
-        event_id:
+        id:
           type: string
           description: Unique identifier for the event.
-        event_name:
+        name:
           type: string
           description: Name of the event.
-        tickets_sold:
-          type: integer
-          description: Total number of tickets sold.
-        gross_income:
-          type: number
-          format: float
-          description: Total revenue from ticket sales before deductions.
-        net_income:
-          type: number
-          format: float
-          description: Revenue from ticket sales after fees and deductions.
-        fees:
+        slug:
+          type: string
+          description: Unique identifier for the event.
+        vatRate:
+          type: string
+          description: VAT rate for the event.
+        income:
+          type: object
+          description: Default service charge structure paid by ticket buyers.
+          properties:
+            nettIncome:
+              type: number
+              format: float
+              description: Net income.
+            grossIncome:
+              type: number
+              format: float
+              description: Gross income.
+            vatAmount:
+              type: number
+              format: float
+              description: VAT amount.
+        commission:
           type: object
           properties:
-            service_fee:
+            amount: 
               type: number
               format: float
-              description: Service fee applied to ticket sales.
-            tax:
+              description: Commission amount.
+            percentage:
               type: number
               format: float
-              description: Tax applied to ticket sales.
-        event_status:
-          type: string
-          description: Current status of the event (e.g., `published`, `pastdue`, or `all`).
+              description: Gross income percentage.
+        returns: 
+          type: object
+          properties:
+            nettReturns:
+              type: number
+              format: float
+              description: Net returns.
+            grossReturns:
+              type: number  
+              format: float
+              description: Gross returns.
+            returnedTicketsCount:
+              type: number
+              format: float
+              description: Returned tickets count.
+            returnedTicketsPercentage:
+              type: number
+              format: float
+              description: Returned tickets percentage.
+        ticketSales:
+          type: array
+          description: "Details about ticket sales including pricing, revenue, and fees."
+          items:
+            type: object
+            properties:
+              poolName:
+                type: string
+                description: "Name of the ticket pool."
+              combinedName:
+                type: string
+                description: "Combined name of the ticket and pool."
+              ticketName:
+                type: string
+                description: "Name of the ticket (optional field)."
+              ticketPrice:
+                type: number
+                format: float
+                description: "Price of a single ticket."
+              ticketSoldAmount:
+                type: integer
+                description: "Number of tickets sold."
+              grossSales:
+                type: number
+                format: float
+                description: "Total gross sales revenue for this ticket."
+              tixyFee:
+                type: number
+                format: float
+                description: "Platform fee for this ticket."
+              withdraw:
+                type: number
+                format: float
+                description: "Amount withdrawable after fees."
       required:
-        - event_id
-        - event_name
-        - tickets_sold
-        - gross_income
-        - net_income
-        - fees
+        - id
+        - name
+        - slug
+        - income
+        - commission
+        - returns
     SalesTerms:
       type: object
       properties:
@@ -1169,25 +1248,154 @@ components:
           $ref: '#/components/schemas/TicketStatistics'
     Event:
       type: object
-      description: Represents an event in the system.
       properties:
-        id:
+        social:
+          type: object
+          properties:
+            links:
+              type: array
+              items:
+                type: string
+          description: "Social media links for the event."
+        tickets:
+          type: object
+          properties:
+            isTicketResselingEnabled:
+              type: boolean
+              example: false
+              description: "Indicates if ticket reselling is enabled."
+            tickets:
+              type: array
+              items:
+                $ref: '#/components/schemas/Ticket'
+          description: "Details of tickets associated with the event."
+        dates:
+          type: object
+          properties:
+            scanning:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date-time
+                end:
+                  type: string
+                  format: date-time
+              description: "Dates for ticket scanning."
+            end:
+              type: string
+              format: date-time
+            openings:
+              type: array
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date-time
+                  id:
+                    type: string
+                    format: uuid
+          description: "Event date details."
+        status:
           type: string
-          description: Unique identifier for the event.
+          description: "Status of the event."
+        types:
+          type: array
+          items:
+            type: string
+          description: "Event types or categories."
+        visibility:
+          type: string
+          description: "Visibility of the event."
+        allowResale:
+          type: boolean
+          description: "Indicates if ticket resale is allowed."
         name:
           type: string
-          description: Name of the event.
-        slug:
+          description: "Name of the event."
+        artistsDetails:
           type: string
-          description: >
-            A short, URL-friendly identifier for the event, used for creating clean URLs.
-        date:
+          nullable: true
+          description: "Details of artists performing at the event."
+        publishTime:
           type: string
           format: date-time
-          description: The scheduled date and time for the event.
-        location:
+        id:
           type: string
-          description: The venue or location where the event will be held.
+          format: uuid
+        slug:
+          type: string
+          description: "URL-friendly identifier for the event."
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        category:
+          type: string
+          description: "Category of the event."
+        restrictions:
+          type: object
+          properties:
+            ageLimit:
+              type: string
+              example: "0"
+        description:
+          type: string
+          description: "Detailed information about an event."
+    Ticket:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Bilet 1"
+        description:
+          type: string
+          example: "bilet 1"
+        id:
+          type: string
+          format: uuid
+          example: "0b090e56-5895-499d-a3ee-ebc79c385112"
+        ticketPools:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketPool'
+        isSinglePoolTicket:
+          type: boolean
+          example: true
+        shouldDisplayTicketName:
+          type: boolean
+          example: true
+    TicketPool:
+      type: object
+      properties:
+        salesDates:
+          type: object
+          properties:
+            start:
+              type: string
+              example: ""
+            hasEndDate:
+              type: boolean
+              example: false
+            end:
+              type: string
+              example: ""
+            hasStartDate:
+              type: boolean
+              example: false
+        id:
+          type: string
+          format: uuid
+          example: "9e2dc72f-f284-4e9b-acc8-76cd71993628"
+        salesActive:
+          type: boolean
+          example: true
+        price:
+          type: string
+          example: "1"
     Error:
       type: object
       description: Represents an error response.

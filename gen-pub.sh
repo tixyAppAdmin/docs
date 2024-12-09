@@ -1,3 +1,3 @@
 #/bin/bash
 
-npx @mintlify/scraping@latest openapi-file ../backend-tixy/organizerApi/public.yaml
+npx @mintlify/scraping@latest openapi-file public.yaml
