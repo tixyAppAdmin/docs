@@ -46,22 +46,24 @@
          
           {
                 "group": "Quickstart",
-                "pages": ["api-authorization", "private_API_quickstart", "public_API_quickstart"]
+                "pages": ["api-authorization", "Private_API_quickstart", "Public_API_quickstart"]
             }
       ]
     },
     {
     "group": "Private API reference",
+
     
      "pages": [
            
             {
                 "group": "Sales endpoints",
                 "pages": [
-                  "retrieve-sales-data-for-events-by-status",
-                  "retrieve-sales-data-for-a-specific-event",
-                   "retrieve-sales-data-for-tours-by-status",
-        "retrieve-sales-data-for-a-specific-tour",   "retrieve-sales-terms-and-fees"
+                   "retrieve-sales-report-for-a-specific-event",
+      "retrieve-sales-report-for-events-by-status",
+      "retrieve-sales-data-for-a-specific-tour",
+      "retrieve-sales-report-for-tours-by-status",
+      "get-sales-terms-and-fees"
      
                 ]       
             },
@@ -69,23 +71,23 @@
             {
                 "group": "Statistics endpoints",
                 "pages": [
-                  "retrieve-statistics-for-events-by-status",
-                  "retrieve-statistics-for-a-specific-event",
-                  "retrieve-statistics-for-tours-by-status",
-                  "retrieve-statistics-for-a-specific-tour",
-                  "retrieve-ticket-statistics-over-a-timeline"
+                    "retrieve-statistics-for-events-by-status",
+      "retrieve-statistics-for-a-specific-event",
+      "retrieve-statistics-for-tours-by-status",
+      "retrieve-statistics-for-a-specific-tour",
+      "retrieve-ticket-statistics-over-a-timeline",
+      "retrieve-device-statistics-for-a-specific-event-or-tour",
+      "retrieve-geographic-statistics-for-a-specific-event-or-tour",
+      "retrieve-conversion-statistics-for-a-specific-event-or-tour"
                 ]
             },
        
             {
                 "group": "Marketing endpoints",
-                "pages": [ "retrieve-device-statistics-for-a-specific-event-or-tour",
-                            "retrieve-geographic-statistics-for-a-specific-event-or-tour",
-                            "retrieve-conversion-statistics-for-a-specific-event-or-tour",
-                            "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
-                            "retrieve-clients-who-granted-consent-for-marketing-for-tours-by-status",
-                            "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-event",
-                            "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-tour"
+                "pages": [  "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
+      "retrieve-clients-who-granted-consent-for-marketing-for-tours-by-status",
+      "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-event",
+      "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-tour"
                 ]
             }
 
