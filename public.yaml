@@ -63,7 +63,7 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string.
+            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
             pattern: '^[a-f0-9]{24}$'
@@ -71,7 +71,7 @@ paths:
           in: query
           required: false
           description: >
-            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods.
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods. **Note:** If you provide this parameter, do not provide `eventId`.
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
