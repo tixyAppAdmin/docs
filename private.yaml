@@ -368,7 +368,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/devices:
+  /statistics/devices:
     get:
       summary: Retrieve device statistics for a specific event or tour
       description: >
@@ -445,7 +445,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/geography:
+  /statistics/geography:
     get:
       summary: Retrieve geographic statistics for a specific event or tour
       description: >
@@ -522,7 +522,7 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/conversion:
+  /statistics/conversion:
     get:
       summary: Retrieve conversion statistics for a specific event or tour
       description: >
@@ -660,31 +660,42 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  total_users:
-                    type: integer
-                    description: Total number of users for the events.
-                  consent_granted:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who granted marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who granted marketing consent.
-                  consent_revoked:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who revoked marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who revoked marketing consent.
+                type: array
+                description: An array of event objects.
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      description: The UUID of the event.
+                    name:
+                      type: string
+                      description: The name of the event.
+                    slug:
+                      type: string
+                      description: A slug identifier for the event.
+                    clientsGrantedConsent:
+                      type: array
+                      description: A list of clients who have granted consent.
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: The client's first name.
+                          lastName:
+                            type: string
+                            description: The client's last name.
+                          email:
+                            type: string
+                            format: email
+                            description: The client's email address.
+                        required:
+                          - name
+                          - lastName
+                          - email
+                additionalProperties: false
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -730,29 +741,41 @@ paths:
               schema:
                 type: object
                 properties:
-                  total_users:
-                    type: integer
-                    description: Total number of users for the event.
-                  consent_granted:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who granted marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who granted marketing consent.
-                  consent_revoked:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who revoked marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who revoked marketing consent.
+                  id:
+                    type: string
+                    format: uuid
+                    description: The UUID of the event.
+                  name:
+                    type: string
+                    description: The name of the event.
+                  slug:
+                    type: string
+                    description: A slug identifier for the event.
+                  clientsGrantedConsent:
+                    type: array
+                    description: A list of clients who have granted consent.
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: The client's first name.
+                        lastName:
+                          type: string
+                          description: The client's last name.
+                        email:
+                          type: string
+                          format: email
+                          description: The client's email address.
+                      required:
+                        - name
+                        - lastName
+                        - email
+                required:
+                  - id
+                  - name
+                  - slug
+                  - clientsGrantedConsent
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':

@@ -71,7 +71,9 @@
             {
                 "group": "Statistics endpoints",
                 "pages": [
-                    "retrieve-statistics-for-events-by-status",
+                  
+    
+      "retrieve-statistics-for-events-by-status",
       "retrieve-statistics-for-a-specific-event",
       "retrieve-statistics-for-a-specific-tour",
       "retrieve-ticket-statistics-over-a-timeline",
@@ -83,7 +85,7 @@
        
             {
                 "group": "Marketing endpoints",
-                "pages": [  "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
+                "pages": [   "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
       "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-event",
       "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-tour"
                 ]
