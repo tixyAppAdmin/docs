@@ -156,7 +156,6 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  
   /sales/terms:
     get:
       summary: Get sales terms and fees
@@ -509,112 +508,6 @@ paths:
                           type: number
                           format: float
                           description: Percentage of interactions from the city.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-      x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
-        httpMethod: POST
-        type: aws_proxy
-  /statistics/conversion:
-    get:
-      summary: Retrieve conversion statistics for a specific event or tour
-      description: >
-        Provides detailed conversion statistics for a specific event or tour. 
-        Includes both Fans Conversion and Tickets Conversion metrics.
-      parameters:
-        - name: eventId
-          in: query
-          required: false
-          description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
-          schema:
-            type: string
-            pattern: '^[a-f0-9]{24}$'
-        - name: eventSlug
-          in: query
-          required: false
-          description: >
-            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods. **Note:** If you provide this parameter, do not provide `eventId`.
-          schema:
-            type: string
-            pattern: '^[a-zA-Z0-9-_\\.]+$'
-      security:
-        - privateOrganizerApiAuthFunction: []
-      responses:
-        '200':
-          description: >
-            Successful response containing conversion statistics for the specified event or tour.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  fans_conversion:
-                    type: object
-                    properties:
-                      displayed_event:
-                        type: integer
-                        description: Number of times the event was displayed.
-                      clicked_buy_tix:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of times the "Buy TIX" button was clicked.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total "Buy TIX" clicks.
-                      reserved_tix:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of reserved tickets.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total reservations.
-                      purchased_tix:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of purchased tickets.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total purchases.
-                  tickets_conversion:
-                    type: object
-                    properties:
-                      reserved_tixes:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of reserved tickets.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total reservations.
-                      purchased_tixes:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of purchased tickets.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total purchases.
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
