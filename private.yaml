@@ -441,7 +441,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       x-amazon-apigateway-integration:
         uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
   /statistics/geography:
@@ -518,7 +518,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
       x-amazon-apigateway-integration:
         uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
   /marketing/clients-granted-consent/events:
