@@ -52,40 +52,34 @@
     },
     {
     "group": "Private API reference",
-
-    
      "pages": [
            
             {
                 "group": "Sales endpoints",
                 "pages": [
-                   "retrieve-sales-report-for-a-specific-event",
+      "retrieve-sales-report-for-a-specific-event",
       "retrieve-sales-report-for-events-by-status",
       "retrieve-sales-data-for-a-specific-tour",
- 
       "get-sales-terms-and-fees"
-     
                 ]       
             },
             
             {
                 "group": "Statistics endpoints",
                 "pages": [
-                  
-    
-      "retrieve-statistics-for-events-by-status",
+                  "retrieve-statistics-for-events-by-status",
       "retrieve-statistics-for-a-specific-event",
       "retrieve-statistics-for-a-specific-tour",
       "retrieve-ticket-statistics-over-a-timeline",
       "retrieve-device-statistics-for-a-specific-event-or-tour",
-      "retrieve-geographic-statistics-for-a-specific-event-or-tour",
-      "retrieve-conversion-statistics-for-a-specific-event-or-tour"
+      "retrieve-geographic-statistics-for-a-specific-event-or-tour"
                 ]
             },
        
             {
                 "group": "Marketing endpoints",
-                "pages": [   "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
+                "pages": [   
+      "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
       "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-event",
       "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-tour"
                 ]
@@ -98,9 +92,7 @@
     "pages": [
       "retrieve-public-events-by-status",
       "retrieve-details-for-a-specific-public-event",
-      "retrieve-public-tours-by-status",
       "retrieve-details-for-a-specific-public-tour"
-     
     ]
     
   }
