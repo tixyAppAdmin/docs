@@ -96,50 +96,6 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPublicEndpointsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /tours:
-    get:
-      summary: Retrieve public tours by status
-      description: >
-        Fetches a list of public tours filtered by the specified status. 
-        Allows users to view tours that are currently published, past due, or all available tours.
-      parameters:
-        - name: status
-          in: query
-          required: false
-          description: >
-            The status of the tours to retrieve sales report for. If not specified, it defaults to `all`. 
-            Valid values are:
-              - `all`: Fetch sales report for all tours.
-              - `published`: Fetch sales report for tours currently published.
-              - `pastdue`: Fetch sales report for tours whose dates have passed.
-      
-          schema:
-            type: string
-            enum:
-              - all
-              - published
-              - pastdue
-      security:
-        - organizerApiAuthFunction: []
-      responses:
-        '200':
-          description: >
-            Successful response containing a list of tours filtered by the specified status.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PublicTour'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-      x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPublicEndpointsFunction.Arn}/invocations
-        httpMethod: POST
-        type: aws_proxy
   /tour:
     get:
       summary: Retrieve details for a specific public tour
