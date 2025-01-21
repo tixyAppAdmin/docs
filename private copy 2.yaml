@@ -37,22 +37,6 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
-        - name: from
-          in: query
-          required: false
-          description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
-        - name: to
-          in: query
-          required: false
-          description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -102,22 +86,6 @@ paths:
               - all
               - published
               - pastdue
-        - name: from
-          in: query
-          required: false
-          description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
-        - name: to
-          in: query
-          required: false
-          description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -165,22 +133,6 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
-        - name: from
-          in: query
-          required: false
-          description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
-        - name: to
-          in: query
-          required: false
-          description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -255,22 +207,6 @@ paths:
               - all
               - published
               - pastdue
-        - name: from
-          in: query
-          required: false
-          description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
-        - name: to
-          in: query
-          required: false
-          description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -316,22 +252,6 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
-        - name: from
-          in: query
-          required: false
-          description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
-        - name: to
-          in: query
-          required: false
-          description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -379,22 +299,6 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
-        - name: from
-          in: query
-          required: false
-          description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
-        - name: to
-          in: query
-          required: false
-          description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
       responses:
         "200":
           description: >
@@ -403,6 +307,61 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatisticsReport"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
+        httpMethod: POST
+        type: aws_proxy
+  /statistics/tickets-timeline:
+    get:
+      summary: Retrieve ticket statistics over a timeline
+      description: >
+        Provides ticket statistics for a specific event or tour over time, including tickets sold, returned, and invitations distributed.
+      security:
+        - privateOrganizerApiAuthFunction: []
+      parameters:
+        - name: eventId
+          in: query
+          required: false
+          description: >
+            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
+          schema:
+            type: string
+            pattern: "^[a-f0-9]{24}$"
+        - name: eventSlug
+          in: query
+          required: false
+          description: >
+            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods. **Note:** If you provide this parameter, do not provide `eventId`.
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9-_\\.]+$'
+        - name: datesRange
+          in: query
+          required: false
+          description: >
+            The range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD` and separated by a comma.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2},\d{4}-\d{2}-\d{2}$'
+      responses:
+        "200":
+          description: >
+            Successful response containing ticket statistics over a timeline for the specified event or tour.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TicketTimelineEntry"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -445,7 +404,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -453,7 +412,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -538,7 +497,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -546,7 +505,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
