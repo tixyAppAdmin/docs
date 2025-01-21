@@ -5,12 +5,12 @@
     "dark": "/logo/logo-dark.svg",
     "light": "/logo/logo-light.svg"
   },
-  "theme": "prism", 
+  "theme": "prism",
   "modeToggle": {
     "default": "dark",
     "isHidden": false
   },
-  
+
   "favicon": "/logo/logo.svg",
   "colors": {
     "primary": "#5139ba",
@@ -36,71 +36,69 @@
     "url": "https://tixyapp.com"
   },
 
-
   "navigation": [
-     {
+    {
       "group": "Get Started",
-      
+
       "pages": [
-          "introduction",
-         
-          {
-                "group": "Quickstart",
-                "pages": ["api-authorization", "Private_API_quickstart", "Public_API_quickstart"]
-            }
+        "introduction",
+
+        {
+          "group": "Quickstart",
+          "pages": [
+            "api-authorization",
+            "Private_API_quickstart",
+            "Public_API_quickstart"
+          ]
+        }
       ]
     },
     {
-    "group": "Private API reference",
-     "pages": [
-           
-            {
-                "group": "Sales endpoints",
-                "pages": [
-      "retrieve-sales-report-for-a-specific-event",
-      "retrieve-sales-report-for-events-by-status",
-      "retrieve-sales-data-for-a-specific-tour",
-      "get-sales-terms-and-fees"
-                ]       
-            },
-            
-            {
-                "group": "Statistics endpoints",
-                "pages": [
-                  "retrieve-statistics-for-events-by-status",
-      "retrieve-statistics-for-a-specific-event",
-      "retrieve-statistics-for-a-specific-tour",
-      "retrieve-ticket-statistics-over-a-timeline",
-      "retrieve-device-statistics-for-a-specific-event-or-tour",
-      "retrieve-geographic-statistics-for-a-specific-event-or-tour"
-                ]
-            },
-       
-            {
-                "group": "Marketing endpoints",
-                "pages": [   
-      "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
-      "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-event",
-      "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-tour"
-                ]
-            }
+      "group": "Private API reference",
+      "pages": [
+        {
+          "group": "Sales endpoints",
+          "pages": [
+            "retrieve-sales-report-for-a-specific-event",
+            "retrieve-sales-report-for-events-by-status",
+            "retrieve-sales-data-for-a-specific-tour",
+            "get-sales-terms-and-fees"
+          ]
+        },
 
-        ]
-    
-  }, {
-    "group": "Public API Reference",
-    "pages": [
-      "retrieve-public-events-by-status",
-      "retrieve-details-for-a-specific-public-event",
-      "retrieve-details-for-a-specific-public-tour"
-    ]
-    
-  }
+        {
+          "group": "Statistics endpoints",
+          "pages": [
+            "retrieve-statistics-for-events-by-status",
+            "retrieve-statistics-for-a-specific-event",
+            "retrieve-statistics-for-a-specific-tour",
+            "retrieve-device-statistics-for-a-specific-event-or-tour",
+            "retrieve-geographic-statistics-for-a-specific-event-or-tour"
+          ]
+        },
+
+        {
+          "group": "Marketing endpoints",
+          "pages": [
+            "retrieve-clients-who-granted-consent-for-marketing-for-events-by-status",
+            "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-event",
+            "retrieve-clients-who-granted-consent-for-marketing-for-a-specific-tour"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Public API Reference",
+      "pages": [
+        "retrieve-public-events-by-status",
+        "retrieve-details-for-a-specific-public-event",
+        "retrieve-details-for-a-specific-public-tour"
+      ]
+    }
   ],
   "footerSocials": {
-     "linkedin": "https://www.linkedin.com/company/tixyapp",
+    "linkedin": "https://www.linkedin.com/company/tixyapp",
     "facebook": "https://www.facebook.com/tixyapp",
     "instagram": "https://www.instagram.com/tixyapp"
-   
   }
 }
