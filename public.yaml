@@ -25,7 +25,7 @@ paths:
               - `all`: Fetch sales report for all events.
               - `published`: Fetch sales report for events currently published.
               - `pastdue`: Fetch sales report for events whose dates have passed.
-      
+
           schema:
             type: string
             enum:
@@ -35,7 +35,7 @@ paths:
       security:
         - organizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing a list of events filtered by the specified status.
           content:
@@ -43,16 +43,19 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Event'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                  $ref: "#/components/schemas/Event"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPublicEndpointsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /event:
     get:
       summary: Retrieve details for a specific public event
@@ -66,7 +69,7 @@ paths:
             The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: eventSlug
           in: query
           required: false
@@ -78,24 +81,27 @@ paths:
       security:
         - organizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing the details of the specified event.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Event'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/Event"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPublicEndpointsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /tour:
     get:
       summary: Retrieve details for a specific public tour
@@ -109,7 +115,7 @@ paths:
             The unique identifier for the tour. Must be a 24-character hexadecimal string.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: tourSlug
           in: query
           required: false
@@ -121,25 +127,27 @@ paths:
       security:
         - organizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing the details of the specified tour.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublicTour'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/PublicTour"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPublicEndpointsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
 components:
   schemas:
     Event:
@@ -158,12 +166,12 @@ components:
           properties:
             isTicketResselingEnabled:
               type: boolean
-              
+
               description: "Indicates if ticket reselling is enabled."
             tickets:
               type: array
               items:
-                $ref: '#/components/schemas/Ticket'
+                $ref: "#/components/schemas/Ticket"
           description: "Details of tickets associated with the event."
         dates:
           type: object
@@ -237,7 +245,7 @@ components:
           properties:
             ageLimit:
               type: string
-             
+
         description:
           type: string
           description: "Detailed information about an event."
@@ -246,21 +254,21 @@ components:
       properties:
         name:
           type: string
-          
+
         description:
           type: string
-          
+
         id:
           type: string
           format: uuid
-          
+
         ticketPools:
           type: array
           items:
-            $ref: '#/components/schemas/TicketPool'
+            $ref: "#/components/schemas/TicketPool"
         isSinglePoolTicket:
           type: boolean
-       
+
         shouldDisplayTicketName:
           type: boolean
 
@@ -272,16 +280,16 @@ components:
           properties:
             start:
               type: string
-            
+
             hasEndDate:
               type: boolean
-              
+
             end:
               type: string
-            
+
             hasStartDate:
               type: boolean
-              
+
         id:
           type: string
           format: uuid
@@ -302,7 +310,7 @@ components:
           type: array
           description: List of events included in the tour.
           items:
-            $ref: '#/components/schemas/Event'
+            $ref: "#/components/schemas/Event"
         description:
           type: string
           description: A short description of the tour.
@@ -317,8 +325,8 @@ components:
         Custom Bearer token authentication for accessing public organizer endpoints.
       x-amazon-apigateway-authtype: custom
       x-amazon-apigateway-authorizer:
-        authorizerUri: 
-          uri: 
+        authorizerUri:
+          uri:
             Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiAuthFunction.Arn}/invocations
         authorizerResultTtlInSeconds: 300
         identitySource: method.request.header.Authorization

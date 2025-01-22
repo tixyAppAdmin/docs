@@ -76,6 +76,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /sales/events:
     get:
       summary: Retrieve sales report for events by status
@@ -110,6 +113,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2024-12-31"
         - name: to
           in: query
           required: false
@@ -141,6 +145,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /sales/tour:
     get:
       summary: Retrieve sales data for a specific tour
@@ -204,6 +211,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /sales/terms:
     get:
       summary: Get sales terms and fees
@@ -233,6 +243,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /statistics/events:
     get:
       summary: Retrieve statistics for events by status
@@ -294,6 +307,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /statistics/event:
     get:
       summary: Retrieve statistics for a specific event
@@ -355,6 +371,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /statistics/tour:
     get:
       summary: Retrieve statistics for a specific tour
@@ -416,6 +435,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /statistics/devices:
     get:
       summary: Retrieve device statistics for a specific event or tour
@@ -509,6 +531,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /statistics/geography:
     get:
       summary: Retrieve geographic statistics for a specific event or tour
@@ -602,6 +627,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /marketing/clients-granted-consent/events:
     get:
       summary: Retrieve clients who granted consent for marketing for events by status
@@ -681,6 +709,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /marketing/clients-granted-consent/event:
     get:
       summary: Retrieve clients who granted consent for marketing for a specific event
@@ -763,6 +794,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /marketing/clients-granted-consent/tour:
     get:
       summary: Retrieve clients who granted consent for marketing for a specific tour
@@ -833,6 +867,9 @@ paths:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
 components:
   schemas:
     TourSalesReport:
