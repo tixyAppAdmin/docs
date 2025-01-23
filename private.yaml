@@ -1474,3 +1474,17 @@ components:
               code:
                 type: string
                 description: Error code indicating the server error.
+    Forbidden:
+      description: >
+        Forbidden. The request is authenticated but does not have the necessary permissions to access the resource.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Error message explaining the forbidden request.
+              code:
+                type: string
+                description: Error code indicating the reason for the forbidden status.

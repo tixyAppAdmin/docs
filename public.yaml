@@ -46,8 +46,7 @@ paths:
                   $ref: "#/components/schemas/Event"
         "400":
           $ref: "#/components/responses/BadRequest"
-        "403":
-          $ref: "#/components/responses/Forbidden"
+
         "500":
           $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
@@ -92,8 +91,7 @@ paths:
                 $ref: "#/components/schemas/Event"
         "400":
           $ref: "#/components/responses/BadRequest"
-        "403":
-          $ref: "#/components/responses/Forbidden"
+
         "404":
           $ref: "#/components/responses/NotFound"
         "500":
@@ -140,8 +138,7 @@ paths:
                 $ref: "#/components/schemas/PublicTour"
         "400":
           $ref: "#/components/responses/BadRequest"
-        "403":
-          $ref: "#/components/responses/Forbidden"
+
         "404":
           $ref: "#/components/responses/NotFound"
         "500":
@@ -379,3 +376,17 @@ components:
               code:
                 type: string
                 description: Error code.
+    Forbidden:
+      description: >
+        Forbidden. The request is authenticated but does not have the necessary permissions to access the resource.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Error message explaining the forbidden request.
+              code:
+                type: string
+                description: Error code indicating the reason for the forbidden status.
