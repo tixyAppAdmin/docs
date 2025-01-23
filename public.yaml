@@ -71,6 +71,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
           required: false
@@ -79,6 +80,7 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-event"
       security:
         - organizerApiAuthFunction: []
       responses:
@@ -118,6 +120,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: tourSlug
           in: query
           required: false
@@ -126,6 +129,7 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-tour"
       security:
         - organizerApiAuthFunction: []
       responses:

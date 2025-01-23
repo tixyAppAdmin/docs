@@ -24,10 +24,10 @@ paths:
           required: false
           description: >
             The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
-
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
           required: false
@@ -37,6 +37,8 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-event"
+
         - name: from
           in: query
           required: false
@@ -93,7 +95,6 @@ paths:
         - name: status
           in: query
           required: false
-          example: published
           description: >
             The status of the events to retrieve sales report for. If not specified, it defaults to `all`. 
             Valid values are:
@@ -124,6 +125,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2025-12-31"
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -168,6 +170,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: tourSlug
           in: query
           required: false
@@ -176,6 +179,7 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-tour"
         - name: from
           in: query
           required: false
@@ -184,6 +188,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2024-12-31"
         - name: to
           in: query
           required: false
@@ -192,6 +197,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2025-12-31"
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -284,6 +290,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2024-12-31"
         - name: to
           in: query
           required: false
@@ -292,6 +299,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2025-12-31"
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -334,6 +342,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
           required: false
@@ -342,6 +351,7 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-event"
         - name: from
           in: query
           required: false
@@ -350,6 +360,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2024-12-31"
         - name: to
           in: query
           required: false
@@ -358,6 +369,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2025-12-31"
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -402,6 +414,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: tourSlug
           in: query
           required: false
@@ -410,6 +423,8 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-tour"
+
         - name: from
           in: query
           required: false
@@ -418,6 +433,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2024-12-31"
         - name: to
           in: query
           required: false
@@ -426,6 +442,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2025-12-31"
       responses:
         "200":
           description: >
@@ -469,6 +486,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
           required: false
@@ -477,6 +495,7 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-event"
         - name: from
           in: query
           required: false
@@ -485,6 +504,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2024-12-31"
         - name: to
           in: query
           required: false
@@ -493,6 +513,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2025-12-31"
       responses:
         "200":
           description: >
@@ -567,6 +588,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
           required: false
@@ -575,6 +597,7 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-event"
         - name: from
           in: query
           required: false
@@ -583,6 +606,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2024-12-31"
         - name: to
           in: query
           required: false
@@ -591,6 +615,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2025-12-31"
       responses:
         "200":
           description: >
@@ -747,6 +772,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
           required: false
@@ -755,6 +781,7 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-event"
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -834,6 +861,7 @@ paths:
           schema:
             type: string
             pattern: "^[a-f0-9]{24}$"
+            example: "550e8400-e29b-41d4-a716-446655440000"
         - name: tourSlug
           in: query
           required: false
@@ -842,6 +870,7 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+            example: "example-tour"
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
@@ -1486,5 +1515,4 @@ components:
                 type: string
                 description: Error message explaining the forbidden request.
               code:
-                type: string
                 description: Error code indicating the reason for the forbidden status.
