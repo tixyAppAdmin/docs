@@ -41,11 +41,11 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Event"
+                $ref: "#/components/schemas/PublicEventList"
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
 
         "500":
           $ref: "#/components/responses/InternalServerError"
@@ -90,9 +90,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: "#/components/schemas/PublicEvent"
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
 
         "404":
           $ref: "#/components/responses/NotFound"
@@ -142,6 +144,8 @@ paths:
                 $ref: "#/components/schemas/PublicTour"
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
 
         "404":
           $ref: "#/components/responses/NotFound"
@@ -168,34 +172,70 @@ x-amazon-apigateway-gateway-responses:
 
 components:
   schemas:
-    Event:
+    PublicEventList:
       type: object
       properties:
-        social:
-          type: object
-          properties:
-            links:
-              type: array
-              items:
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicEvent"
+    PublicEvent:
+      type: object
+      description: An event of the token owner.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the event.
+        slug:
+          type: string
+          description: SEO-friendly slug of the event.
+        name:
+          type: string
+        status:
+          type: string
+          description: Status of the event, e.g. `draft`, `published`, `pastdue`.
+        description:
+          type: array
+          description: Sections of the event description.
+          items:
+            type: object
+            properties:
+              id:
                 type: string
-          description: "Social media links for the event."
-        tickets:
-          type: object
-          properties:
-            isTicketResselingEnabled:
-              type: boolean
-
-              description: "Indicates if ticket reselling is enabled."
-            tickets:
-              type: array
-              items:
-                $ref: "#/components/schemas/Ticket"
-          description: "Details of tickets associated with the event."
+              title:
+                type: string
+              description:
+                type: string
+                description: Section content (HTML).
         dates:
           type: object
           properties:
+            end:
+              type: string
+              format: date-time
+            eventEnd:
+              type: string
+              format: date-time
+            endSales:
+              type: string
+              format: date-time
+            isMultiDay:
+              type: boolean
+            openings:
+              type: array
+              description: Door opening times (one per event day).
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  date:
+                    type: string
+                    format: date-time
             scanning:
               type: object
+              description: When tickets can be scanned at the entrance.
               properties:
                 start:
                   type: string
@@ -203,138 +243,94 @@ components:
                 end:
                   type: string
                   format: date-time
-              description: "Dates for ticket scanning."
-            end:
-              type: string
-              format: date-time
-            openings:
-              type: array
-              items:
-                type: object
-                properties:
-                  date:
-                    type: string
-                    format: date-time
-                  id:
-                    type: string
-                    format: uuid
-          description: "Event date details."
-        status:
+        category:
           type: string
-          description: "Status of the event."
         types:
           type: array
           items:
             type: string
-          description: "Event types or categories."
-        visibility:
+        tags:
+          type: array
+          items:
+            type: string
+        restrictions:
+          type: object
+          properties:
+            ageLimit:
+              type: string
+              description: Minimum age, `0` when there is none.
+        social:
+          type: object
+          properties:
+            links:
+              type: array
+              items:
+                type: string
+        media:
           type: string
-          description: "Visibility of the event."
-        allowResale:
-          type: boolean
-          description: "Indicates if ticket resale is allowed."
-        name:
-          type: string
-          description: "Name of the event."
-        artistsDetails:
-          type: string
-          nullable: true
-          description: "Details of artists performing at the event."
-        publishTime:
-          type: string
-          format: date-time
-        id:
-          type: string
-          format: uuid
-        slug:
-          type: string
-          description: "URL-friendly identifier for the event."
+          description: JSON-encoded object with the file names of the event images (e.g. `eventImage`, `homePageImage`, `ticketImage`).
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-        category:
+    PublicTour:
+      type: object
+      description: A tour of the token owner.
+      properties:
+        id:
           type: string
-          description: "Category of the event."
+          format: uuid
+        slug:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          description: Status of the tour, e.g. `draft`, `published`.
+        salesActive:
+          type: boolean
+          description: Whether ticket sales of the tour are active.
+        publishTime:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: object
+          nullable: true
+          description: Tour description, the same shape as an event description (`sections`).
         restrictions:
           type: object
+          nullable: true
           properties:
             ageLimit:
               type: string
-
-        description:
+        social:
           type: string
-          description: "Detailed information about an event."
-    Ticket:
-      type: object
-      properties:
-        name:
-          type: string
-
-        description:
-          type: string
-
-        id:
-          type: string
-          format: uuid
-
-        ticketPools:
-          type: array
-          items:
-            $ref: "#/components/schemas/TicketPool"
-        isSinglePoolTicket:
-          type: boolean
-
-        shouldDisplayTicketName:
-          type: boolean
-
-    TicketPool:
-      type: object
-      properties:
-        salesDates:
-          type: object
-          properties:
-            start:
-              type: string
-
-            hasEndDate:
-              type: boolean
-
-            end:
-              type: string
-
-            hasStartDate:
-              type: boolean
-
-        id:
-          type: string
-          format: uuid
-        salesActive:
-          type: boolean
-        price:
-          type: string
-    PublicTour:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the tour.
-        name:
-          type: string
-          description: Name of the tour.
+          nullable: true
+          description: JSON-encoded object with social media links (`links`).
         events:
           type: array
-          description: List of events included in the tour.
+          description: Events of the tour.
           items:
-            $ref: "#/components/schemas/Event"
-        description:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              status:
+                type: string
+              slug:
+                type: string
+        createdAt:
           type: string
-          description: A short description of the tour.
-        status:
+          format: date-time
+        updatedAt:
           type: string
-          description: Current status of the tour (e.g., published, pastdue).
+          format: date-time
   securitySchemes:
     organizerApiAuthFunction:
       type: http
@@ -352,6 +348,20 @@ components:
     BadRequest:
       description: >
         Bad Request. The provided parameters are invalid or malformed.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Explanation of the error.
+              code:
+                type: string
+                description: Error code.
+    Unauthorized:
+      description: >
+        Unauthorized. The token is missing, invalid, deleted, or a private token was used.
       content:
         application/json:
           schema:

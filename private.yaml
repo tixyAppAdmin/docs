@@ -137,7 +137,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/EventSalesReport"
+                  $ref: "#/components/schemas/EventSalesReportListItem"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -311,7 +311,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/StatisticsReport"
+                  $ref: "#/components/schemas/EventStatisticsListItem"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -332,7 +332,7 @@ paths:
     get:
       summary: Retrieve statistics for a specific event
       description: >
-        Provides ticket statistics for a specific event, including breakdowns for tickets sold, reserved, available, and more.
+        Provides ticket statistics for a specific event: sold, returned and imported tickets, invitations (also pending ones), tickets per sales channel, unique buyers and sales over time (hours, days, weeks, months).
       parameters:
         - name: eventId
           in: query
@@ -379,7 +379,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StatisticsReport"
+                $ref: "#/components/schemas/EventStatistics"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -450,7 +450,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StatisticsReport"
+                $ref: "#/components/schemas/TourStatistics"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -471,10 +471,10 @@ paths:
         authorizationType: "NONE"
   /statistics/devices:
     get:
-      summary: Retrieve device statistics for a specific event or tour
+      summary: Retrieve device statistics for a specific event
       description: >
-        Provides detailed statistics about the devices used to interact with a specific event or tour. 
-        Includes breakdown by device type (Mobile, Desktop, Tablet) along with usage percentages.
+        Provides detailed statistics about the devices used to interact with a specific event. 
+        Lists unique visitors of the event page per device type (e.g. Desktop, Mobile, Tablet).
       security:
         - privateOrganizerApiAuthFunction: []
       parameters:
@@ -517,42 +517,13 @@ paths:
       responses:
         "200":
           description: >
-            Successful response containing device statistics for the specified event or tour.
+            Successful response containing device statistics for the specified event.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  mobile:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of interactions from mobile devices.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of interactions from mobile devices.
-                  desktop:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of interactions from desktop devices.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of interactions from desktop devices.
-                  tablet:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of interactions from tablet devices.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of interactions from tablet devices.
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeviceVisitors"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -573,10 +544,10 @@ paths:
         authorizationType: "NONE"
   /statistics/geography:
     get:
-      summary: Retrieve geographic statistics for a specific event or tour
+      summary: Retrieve geographic statistics for a specific event
       description: >
-        Provides detailed geographic statistics for a specific event or tour. 
-        Includes breakdowns by country and city along with interaction counts and percentages.
+        Provides detailed geographic statistics for a specific event. 
+        Lists unique visitors of the event page per country (ISO 3166-1 alpha-2 code).
       security:
         - privateOrganizerApiAuthFunction: []
       parameters:
@@ -619,42 +590,13 @@ paths:
       responses:
         "200":
           description: >
-            Successful response containing geographic statistics for the specified event or tour.
+            Successful response containing geographic statistics for the specified event.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  countries:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          description: Name of the country.
-                        count:
-                          type: integer
-                          description: Number of interactions from the country.
-                        percentage:
-                          type: number
-                          format: float
-                          description: Percentage of interactions from the country.
-                  cities:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          description: Name of the city.
-                        count:
-                          type: integer
-                          description: Number of interactions from the city.
-                        percentage:
-                          type: number
-                          format: float
-                          description: Percentage of interactions from the city.
+                type: array
+                items:
+                  $ref: "#/components/schemas/CountryVisitors"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -678,7 +620,7 @@ paths:
       summary: Retrieve clients who granted consent for marketing for events by status
       description: >
         Retrieves a list of clients who have granted consent for marketing purposes for events filtered by the specified status.
-        Includes metrics such as total users, users who granted consent, users who revoked consent, and percentages.
+        Lists the buyers (first and last name) who accepted partner marketing, one entry per e-mail address across the whole response (a buyer of several events is listed under the first of them only).
       parameters:
         - name: status
           in: query
@@ -706,41 +648,8 @@ paths:
             application/json:
               schema:
                 type: array
-                description: An array of event objects.
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      description: The UUID of the event.
-                    name:
-                      type: string
-                      description: The name of the event.
-                    slug:
-                      type: string
-                      description: A slug identifier for the event.
-                    clientsGrantedConsent:
-                      type: array
-                      description: A list of clients who have granted consent.
-                      items:
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                            description: The client's first name.
-                          lastName:
-                            type: string
-                            description: The client's last name.
-                          email:
-                            type: string
-                            format: email
-                            description: The client's email address.
-                        required:
-                          - name
-                          - lastName
-                          - email
-                additionalProperties: false
+                  $ref: "#/components/schemas/EventConsents"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -762,7 +671,7 @@ paths:
       summary: Retrieve clients who granted consent for marketing for a specific event
       description: >
         Retrieves a list of clients who have granted consent for marketing purposes for a specific event.
-        Includes metrics such as total users, users who granted consent, users who revoked consent, and percentages.
+        Lists the buyers (first and last name) who accepted partner marketing, one entry per e-mail address.
       parameters:
         - name: eventId
           in: query
@@ -791,43 +700,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                    description: The UUID of the event.
-                  name:
-                    type: string
-                    description: The name of the event.
-                  slug:
-                    type: string
-                    description: A slug identifier for the event.
-                  clientsGrantedConsent:
-                    type: array
-                    description: A list of clients who have granted consent.
-                    items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          description: The client's first name.
-                        lastName:
-                          type: string
-                          description: The client's last name.
-                        email:
-                          type: string
-                          format: email
-                          description: The client's email address.
-                      required:
-                        - name
-                        - lastName
-                        - email
-                required:
-                  - id
-                  - name
-                  - slug
-                  - clientsGrantedConsent
+                $ref: "#/components/schemas/EventConsents"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -851,7 +724,7 @@ paths:
       summary: Retrieve clients who granted consent for marketing for a specific tour
       description: >
         Retrieves a list of clients who have granted consent for marketing purposes for a specific tour.
-        Includes metrics such as total users, users who granted consent, users who revoked consent, and percentages.
+        Lists the buyers (first and last name) who accepted partner marketing, one entry per e-mail address.
       parameters:
         - name: tourId
           in: query
@@ -880,31 +753,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  total_users:
-                    type: integer
-                    description: Total number of users for the tour.
-                  consent_granted:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who granted marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who granted marketing consent.
-                  consent_revoked:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who revoked marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who revoked marketing consent.
+                $ref: "#/components/schemas/TourConsents"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -936,504 +785,362 @@ x-amazon-apigateway-gateway-responses:
 
 components:
   schemas:
-    TourSalesReport:
+    Channels:
+      type: object
+      description: Split by sales channel - `app` (TIXY website), `widget` (embedded widget), `form` (iFrame form).
+      properties:
+        app:
+          type: number
+        widget:
+          type: number
+        form:
+          type: number
+    TicketSale:
+      type: object
+      description: Sales of one ticket type (per discount code, when one was used).
+      properties:
+        ticketName:
+          type: string
+        poolName:
+          type: string
+        combinedName:
+          type: string
+        ticketPrice:
+          type: number
+        ticketSoldAmount:
+          type: integer
+        grossSales:
+          type: number
+        tixyFee:
+          type: number
+        withdraw:
+          type: number
+          description: Amount paid out to the organizer.
+        discountCode:
+          type: string
+          nullable: true
+        discountSettings:
+          type: object
+          nullable: true
+    FinancialStatistics:
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier for the event.
-        name:
-          type: string
-          description: Name of the event.
-        slug:
-          type: string
-          description: Unique identifier for the event.
-        vatRate:
-          type: string
-          description: VAT rate for the event.
         income:
           type: object
-          description: Default service charge structure paid by ticket buyers.
           properties:
             nettIncome:
               type: number
-              format: float
-              description: Net income.
             grossIncome:
               type: number
-              format: float
-              description: Gross income.
             vatAmount:
               type: number
-              format: float
-              description: VAT amount.
+        channelsIncome:
+          $ref: "#/components/schemas/Channels"
         commission:
           type: object
           properties:
             amount:
               type: number
-              format: float
-              description: Commission amount.
-            percentage:
+            grossIncomePercentage:
               type: number
-              format: float
-              description: Gross income percentage.
+        taxes:
+          type: object
+          properties:
+            allVat:
+              type: number
         returns:
           type: object
           properties:
             nettReturns:
               type: number
-              format: float
-              description: Net returns.
             grossReturns:
               type: number
-              format: float
-              description: Gross returns.
             returnedTicketsCount:
-              type: number
-              format: float
-              description: Returned tickets count.
+              type: integer
             returnedTicketsPercentage:
               type: number
-              format: float
-              description: Returned tickets percentage.
-      required:
-        - id
-        - name
-        - slug
-        - income
-        - commission
-        - returns
+        ticketSales:
+          type: array
+          items:
+            $ref: "#/components/schemas/TicketSale"
+        vatRate:
+          type: number
+          description: VAT rate of the event (%).
+        vatRates:
+          type: object
+          nullable: true
+          description: VAT rates per ticket type, when they differ.
+    TicketsState:
+      type: object
+      properties:
+        sold:
+          type: integer
+        invitations:
+          type: integer
+        invitationsPending:
+          type: integer
+          description: Invitations still waiting for the recipient's confirmation.
+        returned:
+          type: integer
+        imported:
+          type: integer
+          description: Tickets imported from files in the date range.
+    SalesBucket:
+      type: object
+      properties:
+        sold:
+          type: integer
+        reserved:
+          type: integer
+        allReserved:
+          type: integer
+        returned:
+          type: integer
+        invited:
+          type: integer
+        invitedPending:
+          type: integer
+        paidOrders:
+          type: integer
+        placedOrders:
+          type: integer
+        netIncome:
+          type: number
+        vat:
+          type: number
+        commission:
+          type: number
+        channels:
+          $ref: "#/components/schemas/Channels"
+    SalesSummary:
+      type: object
+      properties:
+        daysCount:
+          type: integer
+          description: Number of days in the date range.
+        salesByHour:
+          type: object
+          description: Keyed by hour of day (`HH:00`).
+          additionalProperties:
+            $ref: "#/components/schemas/SalesBucket"
+        salesByDay:
+          type: object
+          description: Keyed by day (`YYYY/MM/DD`).
+          additionalProperties:
+            $ref: "#/components/schemas/SalesBucket"
+        salesByWeeks:
+          type: object
+          description: Keyed by week number counted from the start of the date range (`1`, `2`, ...).
+          additionalProperties:
+            $ref: "#/components/schemas/SalesBucket"
+        salesByMonths:
+          type: object
+          description: Keyed by month (`YYYY/MM`).
+          additionalProperties:
+            $ref: "#/components/schemas/SalesBucket"
     EventSalesReport:
       type: object
       properties:
         id:
           type: string
-          description: Unique identifier for the event.
-        name:
+          format: uuid
+        startDate:
           type: string
-          description: Name of the event.
-        slug:
+          format: date-time
+        endDate:
           type: string
-          description: Unique identifier for the event.
-        vatRate:
-          type: string
-          description: VAT rate for the event.
-        income:
-          type: object
-          description: Default service charge structure paid by ticket buyers.
-          properties:
-            nettIncome:
-              type: number
-              format: float
-              description: Net income.
-            grossIncome:
-              type: number
-              format: float
-              description: Gross income.
-            vatAmount:
-              type: number
-              format: float
-              description: VAT amount.
-        commission:
-          type: object
-          properties:
-            amount:
-              type: number
-              format: float
-              description: Commission amount.
-            percentage:
-              type: number
-              format: float
-              description: Gross income percentage.
-        returns:
-          type: object
-          properties:
-            nettReturns:
-              type: number
-              format: float
-              description: Net returns.
-            grossReturns:
-              type: number
-              format: float
-              description: Gross returns.
-            returnedTicketsCount:
-              type: number
-              format: float
-              description: Returned tickets count.
-            returnedTicketsPercentage:
-              type: number
-              format: float
-              description: Returned tickets percentage.
-        ticketSales:
-          type: array
-          description: "Details about ticket sales including pricing, revenue, and fees."
-          items:
-            type: object
-            properties:
-              poolName:
-                type: string
-                description: "Name of the ticket pool."
-              combinedName:
-                type: string
-                description: "Combined name of the ticket and pool."
-              ticketName:
-                type: string
-                description: "Name of the ticket (optional field)."
-              ticketPrice:
-                type: number
-                format: float
-                description: "Price of a single ticket."
-              ticketSoldAmount:
-                type: integer
-                description: "Number of tickets sold."
-              grossSales:
-                type: number
-                format: float
-                description: "Total gross sales revenue for this ticket."
-              tixyFee:
-                type: number
-                format: float
-                description: "Platform fee for this ticket."
-              withdraw:
-                type: number
-                format: float
-                description: "Amount withdrawable after fees."
-      required:
-        - id
-        - name
-        - slug
-        - income
-        - commission
-        - returns
-    SalesTerms:
-      type: object
-      properties:
-        default_fee:
-          type: object
-          description: Default fee structure paid by the organizer.
-          properties:
-            percentage:
-              type: number
-              format: float
-              description: Percentage of ticket price taken as the fee.
-            fixed:
-              type: number
-              format: float
-              description: Fixed fee amount per ticket.
-        default_service_charge:
-          type: object
-          description: Default service charge structure paid by ticket buyers.
-          properties:
-            percentage:
-              type: number
-              format: float
-              description: Percentage of ticket price taken as the service charge.
-            fixed:
-              type: number
-              format: float
-              description: Fixed service charge amount per ticket.
-        event_specific_terms:
-          type: array
-          description: Specific terms and fees applied to each event.
-          items:
-            type: object
-            properties:
-              event_id:
-                type: string
-                description: Unique identifier for the event.
-              event_name:
-                type: string
-                description: Name of the event.
-              organizer_fee:
-                type: object
-                description: Fee structure paid by the organizer for this event.
-                properties:
-                  percentage:
-                    type: number
-                    format: float
-                    description: Percentage of ticket price taken as the fee.
-                  fixed:
-                    type: number
-                    format: float
-                    description: Fixed fee amount per ticket.
-              service_charge:
-                type: object
-                description: Service charge structure paid by ticket buyers for this event.
-                properties:
-                  percentage:
-                    type: number
-                    format: float
-                    description: Percentage of ticket price taken as the service charge.
-                  fixed:
-                    type: number
-                    format: float
-                    description: Fixed service charge amount per ticket.
-      required:
-        - default_fee
-        - default_service_charge
-        - event_specific_terms
-    TicketStatistics:
-      type: object
-      properties:
-        available:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of tickets available.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of total tickets available.
-        sold:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of tickets sold.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of total tickets sold.
-        reserved:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of tickets in reservation.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of total tickets in reservation.
-        unsold:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of tickets unsold.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of total tickets unsold.
-        returned:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of tickets returned.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of total tickets returned.
-        invitations:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of tickets distributed as invitations.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of total tickets distributed as invitations.
-    TicketTimelineEntry:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-          description: Date of the data point.
-        tickets_sold:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of tickets sold on this date.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of all tickets sold on this date.
-        tickets_returned:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of tickets returned on this date.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of all tickets returned on this date.
-        invitations:
-          type: object
-          properties:
-            count:
-              type: integer
-              description: Number of invitations distributed on this date.
-            percentage:
-              type: number
-              format: float
-              description: Percentage of all tickets distributed as invitations on this date.
-    StatisticsReport:
+          format: date-time
+        financialStatistics:
+          $ref: "#/components/schemas/FinancialStatistics"
+        currentTicketsState:
+          $ref: "#/components/schemas/TicketsState"
+        currentChannelTicketsState:
+          $ref: "#/components/schemas/Channels"
+        uniqueBuyersCount:
+          type: integer
+        salesSummary:
+          $ref: "#/components/schemas/SalesSummary"
+    EventSalesReportListItem:
       type: object
       properties:
         id:
           type: string
-          description: Unique identifier for the event or tour.
+          format: uuid
         name:
           type: string
-          description: Name of the event or tour.
-        ticket_statistics:
-          $ref: "#/components/schemas/TicketStatistics"
-    Event:
-      type: object
-      properties:
-        social:
-          type: object
-          properties:
-            links:
-              type: array
-              items:
-                type: string
-          description: "Social media links for the event."
-        tickets:
-          type: object
-          properties:
-            isTicketResselingEnabled:
-              type: boolean
-
-              description: "Indicates if ticket reselling is enabled."
-            tickets:
-              type: array
-              items:
-                $ref: "#/components/schemas/Ticket"
-          description: "Details of tickets associated with the event."
-        dates:
-          type: object
-          properties:
-            scanning:
-              type: object
-              properties:
-                start:
-                  type: string
-                  format: date-time
-                end:
-                  type: string
-                  format: date-time
-              description: "Dates for ticket scanning."
-            end:
-              type: string
-              format: date-time
-            openings:
-              type: array
-              items:
-                type: object
-                properties:
-                  date:
-                    type: string
-                    format: date-time
-                  id:
-                    type: string
-                    format: uuid
-          description: "Event date details."
         status:
           type: string
-          description: "Status of the event."
-        types:
-          type: array
-          items:
-            type: string
-          description: "Event types or categories."
-        visibility:
-          type: string
-          description: "Visibility of the event."
-        allowResale:
-          type: boolean
-          description: "Indicates if ticket resale is allowed."
-        name:
-          type: string
-          description: "Name of the event."
-        artistsDetails:
-          type: string
-          nullable: true
-          description: "Details of artists performing at the event."
-        publishTime:
-          type: string
-          format: date-time
-        id:
-          type: string
-          format: uuid
         slug:
           type: string
-          description: "URL-friendly identifier for the event."
-        createdAt:
+        startDate:
           type: string
           format: date-time
-        updatedAt:
+        endDate:
           type: string
           format: date-time
-        category:
+        financialStatistics:
+          $ref: "#/components/schemas/FinancialStatistics"
+        currentChannelTicketsState:
+          $ref: "#/components/schemas/Channels"
+        salesSummary:
+          $ref: "#/components/schemas/SalesSummary"
+    TourSalesReport:
+      type: object
+      description: >
+        Sales of every event of the tour, plus the numeric fields of the events added up
+        (percentages and rates averaged). An empty tour has no totals.
+      properties:
+        id:
           type: string
-          description: "Category of the event."
-        restrictions:
-          type: object
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventSalesReportListItem"
+        financialStatistics:
+          $ref: "#/components/schemas/FinancialStatistics"
+        currentChannelTicketsState:
+          $ref: "#/components/schemas/Channels"
+        salesSummary:
+          $ref: "#/components/schemas/SalesSummary"
+    EventStatistics:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        currentTicketsState:
+          $ref: "#/components/schemas/TicketsState"
+        currentChannelTicketsState:
+          $ref: "#/components/schemas/Channels"
+        uniqueBuyersCount:
+          type: integer
+        salesSummary:
+          $ref: "#/components/schemas/SalesSummary"
+    EventStatisticsListItem:
+      allOf:
+        - $ref: "#/components/schemas/EventStatistics"
+        - type: object
           properties:
-            ageLimit:
+            name:
               type: string
-
-        description:
+            status:
+              type: string
+            slug:
+              type: string
+    TourStatistics:
+      type: object
+      description: >
+        Statistics of every event of the tour, plus the numeric fields of the events added up
+        (percentages and rates averaged). A tour without events answers 404.
+      properties:
+        id:
           type: string
-          description: "Detailed information about an event."
-    Ticket:
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventStatisticsListItem"
+        currentTicketsState:
+          $ref: "#/components/schemas/TicketsState"
+        currentChannelTicketsState:
+          $ref: "#/components/schemas/Channels"
+        uniqueBuyersCount:
+          type: integer
+        salesSummary:
+          $ref: "#/components/schemas/SalesSummary"
+    DeviceVisitors:
+      type: object
+      properties:
+        device:
+          type: string
+          description: Device type, e.g. `Desktop`, `Mobile`, `Tablet`, `Laptop`.
+        visitors:
+          type: integer
+          description: Unique visitors of the event page in the date range.
+    CountryVisitors:
+      type: object
+      properties:
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code, e.g. `PL`.
+        visitors:
+          type: integer
+          description: Unique visitors of the event page in the date range.
+    Fee:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - percentage
+            - fixed
+        value:
+          type: number
+          description: Percent for `percentage`, an amount for `fixed`.
+    SalesTerms:
+      type: object
+      description: The organizer's own terms, or the platform defaults when there are none.
+      properties:
+        defaultFee:
+          $ref: "#/components/schemas/Fee"
+        defaultService:
+          $ref: "#/components/schemas/Fee"
+        level:
+          type: string
+          nullable: true
+          description: Organizer level, e.g. `trusted`.
+    ConsentClient:
       type: object
       properties:
         name:
           type: string
-
-        description:
+        lastName:
           type: string
-
-        id:
-          type: string
-          format: uuid
-
-        ticketPools:
-          type: array
-          items:
-            $ref: "#/components/schemas/TicketPool"
-        isSinglePoolTicket:
-          type: boolean
-
-        shouldDisplayTicketName:
-          type: boolean
-
-    TicketPool:
+    EventConsents:
       type: object
       properties:
-        salesDates:
-          type: object
-          properties:
-            start:
-              type: string
-
-            hasEndDate:
-              type: boolean
-
-            end:
-              type: string
-
-            hasStartDate:
-              type: boolean
-
         id:
           type: string
           format: uuid
-
-        salesActive:
-          type: boolean
-
-        price:
+        name:
           type: string
-
+        slug:
+          type: string
+        clientsGrantedConsent:
+          type: array
+          description: Buyers who accepted partner marketing, newest first, one entry per e-mail address (in `/events` across all events of the response).
+          items:
+            $ref: "#/components/schemas/ConsentClient"
+    TourConsents:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        clientsGrantedConsent:
+          type: array
+          description: Buyers of all events of the tour who accepted partner marketing, one entry per e-mail address.
+          items:
+            $ref: "#/components/schemas/ConsentClient"
     Error:
       type: object
       description: Represents an error response.
