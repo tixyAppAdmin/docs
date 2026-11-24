@@ -174,6 +174,7 @@ The API uses standard HTTP status codes to indicate the success or failure of re
 
 - `200 OK`: Successful request
 - `400 Bad Request`: Invalid parameters or malformed request
+- `401 Unauthorized`: Missing, invalid or deleted token
 - `404 Not Found`: Requested resource does not exist
 - `500 Internal Server Error`: Unexpected server-side error
 
@@ -184,6 +185,8 @@ The API uses standard HTTP status codes to indicate the success or failure of re
   "code": "NOT_FOUND"
 }
 ```
+
+Each error response includes `code` (`BAD_REQUEST`, `UNAUTHORIZED`, `NOT_FOUND`, `INTERNAL_SERVER_ERROR`, or, for errors returned by the API gateway itself, its error type, e.g. `THROTTLED`) and `message`.
 
 ## Rate Limiting
 

@@ -23,10 +23,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
+            The unique identifier (UUID) of the event. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
@@ -43,7 +43,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -51,7 +51,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -112,7 +112,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -121,7 +121,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -166,10 +166,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the tour. Must be a 24-character hexadecimal string.
+            The unique identifier (UUID) of the tour.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: tourSlug
           in: query
@@ -184,7 +184,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -193,7 +193,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -286,7 +286,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -295,7 +295,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -338,10 +338,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
+            The unique identifier (UUID) of the event. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
@@ -356,7 +356,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -365,7 +365,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -410,10 +410,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the tour. Must be a 24-character hexadecimal string.
+            The unique identifier (UUID) of the tour.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: tourSlug
           in: query
@@ -429,7 +429,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -438,7 +438,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -482,10 +482,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
+            The unique identifier (UUID) of the event. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
@@ -500,7 +500,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -509,7 +509,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -584,10 +584,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
+            The unique identifier (UUID) of the event. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
@@ -602,7 +602,7 @@ paths:
           in: query
           required: false
           description: >
-            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+            The from date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -611,7 +611,7 @@ paths:
           in: query
           required: false
           description: >
-            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+            The end date in the range of dates for the request. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
           schema:
             type: string
             pattern: '^\d{4}-\d{2}-\d{2}$'
@@ -768,10 +768,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
+            The unique identifier (UUID) of the event. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
@@ -857,10 +857,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the tour. Must be a 24-character hexadecimal string.
+            The unique identifier (UUID) of the tour.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: tourSlug
           in: query
@@ -923,6 +923,17 @@ paths:
         cacheKeyParameters: []
         cacheNamespace: "none"
         authorizationType: "NONE"
+# Errors API Gateway answers itself (authorizer 401, throttling, integration
+# failures) get the same { message, code } body as the Lambda errors.
+# $context.error.messageString is already a quoted JSON string.
+x-amazon-apigateway-gateway-responses:
+  DEFAULT_4XX:
+    responseTemplates:
+      application/json: '{"message": $context.error.messageString, "code": "$context.error.responseType"}'
+  DEFAULT_5XX:
+    responseTemplates:
+      application/json: '{"message": $context.error.messageString, "code": "$context.error.responseType"}'
+
 components:
   schemas:
     TourSalesReport:

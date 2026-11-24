@@ -67,10 +67,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
+            The unique identifier (UUID) of the event. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: eventSlug
           in: query
@@ -116,10 +116,10 @@ paths:
           in: query
           required: false
           description: >
-            The unique identifier for the tour. Must be a 24-character hexadecimal string.
+            The unique identifier (UUID) of the tour.
           schema:
             type: string
-            pattern: "^[a-f0-9]{24}$"
+            pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
             example: "550e8400-e29b-41d4-a716-446655440000"
         - name: tourSlug
           in: query
@@ -155,6 +155,17 @@ paths:
         cacheKeyParameters: []
         cacheNamespace: "none"
         authorizationType: "NONE"
+# Errors API Gateway answers itself (authorizer 401, throttling, integration
+# failures) get the same { message, code } body as the Lambda errors.
+# $context.error.messageString is already a quoted JSON string.
+x-amazon-apigateway-gateway-responses:
+  DEFAULT_4XX:
+    responseTemplates:
+      application/json: '{"message": $context.error.messageString, "code": "$context.error.responseType"}'
+  DEFAULT_5XX:
+    responseTemplates:
+      application/json: '{"message": $context.error.messageString, "code": "$context.error.responseType"}'
+
 components:
   schemas:
     Event:

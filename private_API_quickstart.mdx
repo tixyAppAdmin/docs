@@ -100,7 +100,7 @@ The API uses standard HTTP status codes:
 
 Each error response includes:
 
-- `code`: A machine-readable error code
+- `code`: A machine-readable error code – `BAD_REQUEST`, `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `INTERNAL_SERVER_ERROR`, or, for errors returned by the API gateway itself, its error type (e.g. `THROTTLED`)
 - `message`: A human-readable error description
 
 ## Rate Limits
