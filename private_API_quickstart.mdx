@@ -1,6 +1,6 @@
 ---
-title: 'Private API Quickstart' 
-description: 'Get started quickly with the TIXY Private Organizer API'
+title: "Private API Quickstart"
+description: "Get started quickly with the TIXY Private Organizer API"
 ---
 
 # TIXY Private Organizer API Quickstart
@@ -33,11 +33,13 @@ The Private Organizer API is organized into several key categories:
 ### Sales Endpoints
 
 1. **Event Sales Reports**
+
    - Retrieve sales report for a specific event
    - Retrieve sales reports for events by status
    - Endpoint: `/sales/event/{id}`, `/sales/events/{status}`
 
 2. **Tour Sales Reports**
+
    - Retrieve sales data for a specific tour
    - Retrieve sales reports for tours by status
    - Endpoint: `/sales/tour/{id}`, `/sales/tours/{status}`
@@ -49,34 +51,29 @@ The Private Organizer API is organized into several key categories:
 ### Statistics Endpoints
 
 1. **Event Statistics**
+
    - Retrieve ticket statistics for events
    - Endpoint: `/statistics/events/{status}`, `/statistics/event/{id}`
 
 2. **Tour Statistics**
+
    - Retrieve ticket statistics for tours
    - Endpoint: `/statistics/tours/{status}`, `/statistics/tour/{id}`
 
-3. **Ticket Timeline**
-   - Get ticket sales and distribution over time
-   - Endpoint: `/statistics/tickets-timeline/{id}`
+3. **Device Statistics**
 
-### Marketing Insights Endpoints
-
-1. **Device Statistics**
    - Analyze device usage for events and tours
    - Endpoint: `/marketing/devices/{id}`
 
-2. **Geographic Statistics**
+4. **Geographic Statistics**
    - Understand audience geographic distribution
    - Endpoint: `/marketing/geography/{id}`
 
-3. **Conversion Statistics**
-   - Track fan and ticket conversion metrics
-   - Endpoint: `/marketing/conversion/{id}`
+### Marketing Insights Endpoints
 
-4. **Marketing Consent**
+1. **Marketing Consent**
    - Retrieve marketing consent data for events and tours
-   - Endpoints: 
+   - Endpoints:
      - `/marketing/clients-granted-consent/events/{status}`
      - `/marketing/clients-granted-consent/tours/{status}`
      - `/marketing/clients-granted-consent/event/{id}`
@@ -102,6 +99,7 @@ The API uses standard HTTP status codes:
 - `500 Internal Server Error`: Server-side error
 
 Each error response includes:
+
 - `code`: A machine-readable error code
 - `message`: A human-readable error description
 
@@ -116,43 +114,22 @@ For further assistance, integration help, or questions about the Private Organiz
 
 ## Setting up
 
-
-
 <CardGroup cols={2}>
-  <Card
-    title="About TIXY connect"
-    icon="pen-to-square"
-    href="/introduction"
-  >
+  <Card title="About TIXY connect" icon="pen-to-square" href="/introduction">
     About TIXY connect
   </Card>
-  <Card
-    title="Authorization"
-    icon="users"
-    href="/api-authorization"
-  >
+  <Card title="Authorization" icon="users" href="/api-authorization">
     How to authorize api
   </Card>
 </CardGroup>
 
 ## Avaliable APIs
 
-
-
 <CardGroup cols={2}>
-  <Card
-    title="Private API"
-    icon="lock"
-    href="/private_API_quickstart"
-  >
+  <Card title="Private API" icon="lock" href="/private_API_quickstart">
     Make use of private API
   </Card>
-  <Card
-    title="Public API"
-    icon="megaphone"
-    href="/public_API_quickstart"
-  >
+  <Card title="Public API" icon="megaphone" href="/public_API_quickstart">
     Make use of public API
   </Card>
-  
 </CardGroup>

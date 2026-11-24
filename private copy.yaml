@@ -24,42 +24,63 @@ paths:
           required: false
           description: >
             The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
-            
+
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: eventSlug
           in: query
           required: false
           description: >
             The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods. **Note:** If you provide this parameter, do not provide `eventId`.
-            
+
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+        - name: from
+          in: query
+          required: false
+          description: >
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+        - name: to
+          in: query
+          required: false
+          description: >
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing sales report for the specified event.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventSalesReport'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/EventSalesReport"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /sales/events:
     get:
       summary: Retrieve sales report for events by status
@@ -79,17 +100,34 @@ paths:
               - `all`: Fetch sales report for all events.
               - `published`: Fetch sales report for events currently published.
               - `pastdue`: Fetch sales report for events whose dates have passed.
-      
+
           schema:
             type: string
             enum:
               - all
               - published
               - pastdue
+        - name: from
+          in: query
+          required: false
+          description: >
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+            example: "2024-12-31"
+        - name: to
+          in: query
+          required: false
+          description: >
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing sales report for the specified events.
           content:
@@ -97,18 +135,23 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EventSalesReport'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                  $ref: "#/components/schemas/EventSalesReport"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
-        type: aws_proxy 
+        type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /sales/tour:
     get:
       summary: Retrieve sales data for a specific tour
@@ -124,7 +167,7 @@ paths:
             The unique identifier for the tour. Must be a 24-character hexadecimal string.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: tourSlug
           in: query
           required: false
@@ -133,76 +176,50 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+        - name: from
+          in: query
+          required: false
+          description: >
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+        - name: to
+          in: query
+          required: false
+          description: >
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing sales data for the specified tour.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TourSalesReport'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/TourSalesReport"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /sales/tours:
-    get:
-      summary: Retrieve sales report for tours by status
-      description: >
-        Fetches detailed sales report for all tours with the specified status.
-      parameters:
-        - name: status
-          in: query
-          required: false
-          description: >
-            The status of the tours to retrieve sales report for. If not specified, it defaults to `all`. 
-            Valid values are:
-              - `all`: Fetch sales report for all tours.
-              - `published`: Fetch sales report for tours currently published.
-              - `pastdue`: Fetch sales report for tours whose dates have passed.
-      
-          schema:
-            type: string
-            enum:
-              - all
-              - published
-              - pastdue
-      security:
-        - privateOrganizerApiAuthFunction: []
-      responses:
-        '200':
-          description: >
-            Successful response containing sales report for the specified tours.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TourSalesReport'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-      x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
-        httpMethod: POST
-        type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /sales/terms:
     get:
       summary: Get sales terms and fees
@@ -214,24 +231,29 @@ paths:
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing the sales terms and fee details.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SalesTerms'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/SalesTerms"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsSalesFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /statistics/events:
     get:
       summary: Retrieve statistics for events by status
@@ -247,17 +269,33 @@ paths:
               - `all`: Fetch sales report for all events.
               - `published`: Fetch sales report for events currently published.
               - `pastdue`: Fetch sales report for events whose dates have passed.
-      
+
           schema:
             type: string
             enum:
               - all
               - published
               - pastdue
+        - name: from
+          in: query
+          required: false
+          description: >
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+        - name: to
+          in: query
+          required: false
+          description: >
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing statistics for events matching the specified status.
           content:
@@ -265,18 +303,23 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/StatisticsReport'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                  $ref: "#/components/schemas/StatisticsReport"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /statistics/event:
     get:
       summary: Retrieve statistics for a specific event
@@ -290,7 +333,7 @@ paths:
             The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: eventSlug
           in: query
           required: false
@@ -299,76 +342,50 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+        - name: from
+          in: query
+          required: false
+          description: >
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+        - name: to
+          in: query
+          required: false
+          description: >
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing statistics for the specified event.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StatisticsReport'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/StatisticsReport"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /statistics/tours:
-    get:
-      summary: Retrieve statistics for tours by status
-      description: >
-        Provides ticket statistics for tours filtered by status (e.g., published, pastdue).
-      parameters:
-        - name: status
-          in: query
-          required: false
-          description: >
-            The status of the tours to retrieve sales report for. If not specified, it defaults to `all`. 
-            Valid values are:
-              - `all`: Fetch sales report for all tours.
-              - `published`: Fetch sales report for tours currently published.
-              - `pastdue`: Fetch sales report for tours whose dates have passed.
-      
-          schema:
-            type: string
-            enum:
-              - all
-              - published
-              - pastdue
-      security:
-        - privateOrganizerApiAuthFunction: []
-      responses:
-        '200':
-          description: >
-            Successful response containing statistics for tours matching the specified status.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/StatisticsReport'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-      x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
-        httpMethod: POST
-        type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /statistics/tour:
     get:
       summary: Retrieve statistics for a specific tour
@@ -384,7 +401,7 @@ paths:
             The unique identifier for the tour. Must be a 24-character hexadecimal string.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: tourSlug
           in: query
           required: false
@@ -393,75 +410,49 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+        - name: from
+          in: query
+          required: false
+          description: >
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+        - name: to
+          in: query
+          required: false
+          description: >
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing statistics for the specified tour.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StatisticsReport'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/StatisticsReport"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /statistics/tickets-timeline:
-    get:
-      summary: Retrieve ticket statistics over a timeline
-      description: >
-        Provides ticket statistics for a specific event or tour over time, including tickets sold, returned, and invitations distributed.
-      security:
-        - privateOrganizerApiAuthFunction: []
-      parameters:
-        - name: eventId
-          in: query
-          required: false
-          description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
-          schema:
-            type: string
-            pattern: '^[a-f0-9]{24}$'
-        - name: eventSlug
-          in: query
-          required: false
-          description: >
-            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods. **Note:** If you provide this parameter, do not provide `eventId`.
-          schema:
-            type: string
-            pattern: '^[a-zA-Z0-9-_\\.]+$'
-      responses:
-        '200':
-          description: >
-            Successful response containing ticket statistics over a timeline for the specified event or tour.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TicketTimelineEntry'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-      x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
-        httpMethod: POST
-        type: aws_proxy
-  /marketing/devices:
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
+  /statistics/devices:
     get:
       summary: Retrieve device statistics for a specific event or tour
       description: >
@@ -477,7 +468,7 @@ paths:
             The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: eventSlug
           in: query
           required: false
@@ -486,8 +477,24 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+        - name: from
+          in: query
+          required: false
+          description: >
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+        - name: to
+          in: query
+          required: false
+          description: >
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing device statistics for the specified event or tour.
           content:
@@ -525,20 +532,25 @@ paths:
                         type: number
                         format: float
                         description: Percentage of interactions from tablet devices.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/geography:
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
+  /statistics/geography:
     get:
       summary: Retrieve geographic statistics for a specific event or tour
       description: >
@@ -554,7 +566,7 @@ paths:
             The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: eventSlug
           in: query
           required: false
@@ -563,8 +575,24 @@ paths:
           schema:
             type: string
             pattern: '^[a-zA-Z0-9-_\\.]+$'
+        - name: from
+          in: query
+          required: false
+          description: >
+            The from date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the earliest date available.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+        - name: to
+          in: query
+          required: false
+          description: >
+            The end date in the range of dates for the request. Must be a 24-character hexadecimal string. **Note:** dates should be in the format `YYYY-MM-DD`. If not provided, defaults to the current date.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing geographic statistics for the specified event or tour.
           content:
@@ -602,125 +630,24 @@ paths:
                           type: number
                           format: float
                           description: Percentage of interactions from the city.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsStatisticsFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/conversion:
-    get:
-      summary: Retrieve conversion statistics for a specific event or tour
-      description: >
-        Provides detailed conversion statistics for a specific event or tour. 
-        Includes both Fans Conversion and Tickets Conversion metrics.
-      parameters:
-        - name: eventId
-          in: query
-          required: false
-          description: >
-            The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
-          schema:
-            type: string
-            pattern: '^[a-f0-9]{24}$'
-        - name: eventSlug
-          in: query
-          required: false
-          description: >
-            The SEO-friendly slug for the event. Accepts alphanumeric characters, hyphens, underscores, and periods. **Note:** If you provide this parameter, do not provide `eventId`.
-          schema:
-            type: string
-            pattern: '^[a-zA-Z0-9-_\\.]+$'
-      security:
-        - privateOrganizerApiAuthFunction: []
-      responses:
-        '200':
-          description: >
-            Successful response containing conversion statistics for the specified event or tour.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  fans_conversion:
-                    type: object
-                    properties:
-                      displayed_event:
-                        type: integer
-                        description: Number of times the event was displayed.
-                      clicked_buy_tix:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of times the "Buy TIX" button was clicked.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total "Buy TIX" clicks.
-                      reserved_tix:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of reserved tickets.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total reservations.
-                      purchased_tix:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of purchased tickets.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total purchases.
-                  tickets_conversion:
-                    type: object
-                    properties:
-                      reserved_tixes:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of reserved tickets.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total reservations.
-                      purchased_tixes:
-                        type: object
-                        properties:
-                          count:
-                            type: integer
-                            description: Number of purchased tickets.
-                          percentage:
-                            type: number
-                            format: float
-                            description: Percentage of total purchases.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-      x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
-        httpMethod: POST
-        type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /marketing/clients-granted-consent/events:
     get:
       summary: Retrieve clients who granted consent for marketing for events by status
@@ -737,7 +664,7 @@ paths:
               - `all`: Fetch sales report for all events.
               - `published`: Fetch sales report for events currently published.
               - `pastdue`: Fetch sales report for events whose dates have passed.
-      
+
           schema:
             type: string
             enum:
@@ -747,116 +674,64 @@ paths:
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing marketing consent information for clients associated with events matching the specified status.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  total_users:
-                    type: integer
-                    description: Total number of users for the events.
-                  consent_granted:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who granted marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who granted marketing consent.
-                  consent_revoked:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who revoked marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who revoked marketing consent.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                type: array
+                description: An array of event objects.
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      description: The UUID of the event.
+                    name:
+                      type: string
+                      description: The name of the event.
+                    slug:
+                      type: string
+                      description: A slug identifier for the event.
+                    clientsGrantedConsent:
+                      type: array
+                      description: A list of clients who have granted consent.
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: The client's first name.
+                          lastName:
+                            type: string
+                            description: The client's last name.
+                          email:
+                            type: string
+                            format: email
+                            description: The client's email address.
+                        required:
+                          - name
+                          - lastName
+                          - email
+                additionalProperties: false
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
-  /marketing/clients-granted-consent/tours:
-    get:
-      summary: Retrieve clients who granted consent for marketing for tours by status
-      description: >
-        Retrieves a list of clients who have granted consent for marketing purposes for tours filtered by the specified status.
-        Includes metrics such as total users, users who granted consent, users who revoked consent, and percentages.
-      parameters:
-        - name: status
-          in: query
-          required: false
-          description: >
-            The status of the tours to retrieve sales report for. If not specified, it defaults to `all`. 
-            Valid values are:
-              - `all`: Fetch sales report for all tours.
-              - `published`: Fetch sales report for tours currently published.
-              - `pastdue`: Fetch sales report for tours whose dates have passed.
-      
-          schema:
-            type: string
-            enum:
-              - all
-              - published
-              - pastdue
-      security:
-        - privateOrganizerApiAuthFunction: []
-      responses:
-        '200':
-          description: >
-            Successful response containing marketing consent information for clients associated with tours matching the specified status.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  total_users:
-                    type: integer
-                    description: Total number of users for the tours.
-                  consent_granted:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who granted marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who granted marketing consent.
-                  consent_revoked:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who revoked marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who revoked marketing consent.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-      x-amazon-apigateway-integration:
-        uri: 
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
-        httpMethod: POST
-        type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /marketing/clients-granted-consent/event:
     get:
       summary: Retrieve clients who granted consent for marketing for a specific event
@@ -871,7 +746,7 @@ paths:
             The unique identifier for the event. Must be a 24-character hexadecimal string. **Note:** If you provide this parameter, do not provide `eventSlug`.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: eventSlug
           in: query
           required: false
@@ -883,7 +758,7 @@ paths:
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing marketing consent information for clients associated with the specified event.
           content:
@@ -891,42 +766,59 @@ paths:
               schema:
                 type: object
                 properties:
-                  total_users:
-                    type: integer
-                    description: Total number of users for the event.
-                  consent_granted:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who granted marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who granted marketing consent.
-                  consent_revoked:
-                    type: object
-                    properties:
-                      count:
-                        type: integer
-                        description: Number of users who revoked marketing consent.
-                      percentage:
-                        type: number
-                        format: float
-                        description: Percentage of users who revoked marketing consent.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                  id:
+                    type: string
+                    format: uuid
+                    description: The UUID of the event.
+                  name:
+                    type: string
+                    description: The name of the event.
+                  slug:
+                    type: string
+                    description: A slug identifier for the event.
+                  clientsGrantedConsent:
+                    type: array
+                    description: A list of clients who have granted consent.
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: The client's first name.
+                        lastName:
+                          type: string
+                          description: The client's last name.
+                        email:
+                          type: string
+                          format: email
+                          description: The client's email address.
+                      required:
+                        - name
+                        - lastName
+                        - email
+                required:
+                  - id
+                  - name
+                  - slug
+                  - clientsGrantedConsent
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
   /marketing/clients-granted-consent/tour:
     get:
       summary: Retrieve clients who granted consent for marketing for a specific tour
@@ -941,7 +833,7 @@ paths:
             The unique identifier for the tour. Must be a 24-character hexadecimal string.
           schema:
             type: string
-            pattern: '^[a-f0-9]{24}$'
+            pattern: "^[a-f0-9]{24}$"
         - name: tourSlug
           in: query
           required: false
@@ -953,7 +845,7 @@ paths:
       security:
         - privateOrganizerApiAuthFunction: []
       responses:
-        '200':
+        "200":
           description: >
             Successful response containing marketing consent information for clients associated with the specified tour.
           content:
@@ -984,19 +876,24 @@ paths:
                         type: number
                         format: float
                         description: Percentage of users who revoked marketing consent.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
       x-amazon-apigateway-integration:
-        uri: 
+        uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiPrivateEndpointsMarketingFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
+        cacheKeyParameters: []
+        cacheNamespace: "none"
+        authorizationType: "NONE"
 components:
   schemas:
     TourSalesReport:
@@ -1033,7 +930,7 @@ components:
         commission:
           type: object
           properties:
-            amount: 
+            amount:
               type: number
               format: float
               description: Commission amount.
@@ -1041,7 +938,7 @@ components:
               type: number
               format: float
               description: Gross income percentage.
-        returns: 
+        returns:
           type: object
           properties:
             nettReturns:
@@ -1049,7 +946,7 @@ components:
               format: float
               description: Net returns.
             grossReturns:
-              type: number  
+              type: number
               format: float
               description: Gross returns.
             returnedTicketsCount:
@@ -1101,7 +998,7 @@ components:
         commission:
           type: object
           properties:
-            amount: 
+            amount:
               type: number
               format: float
               description: Commission amount.
@@ -1109,7 +1006,7 @@ components:
               type: number
               format: float
               description: Gross income percentage.
-        returns: 
+        returns:
           type: object
           properties:
             nettReturns:
@@ -1117,7 +1014,7 @@ components:
               format: float
               description: Net returns.
             grossReturns:
-              type: number  
+              type: number
               format: float
               description: Gross returns.
             returnedTicketsCount:
@@ -1346,7 +1243,7 @@ components:
           type: string
           description: Name of the event or tour.
         ticket_statistics:
-          $ref: '#/components/schemas/TicketStatistics'
+          $ref: "#/components/schemas/TicketStatistics"
     Event:
       type: object
       properties:
@@ -1363,12 +1260,12 @@ components:
           properties:
             isTicketResselingEnabled:
               type: boolean
-              
+
               description: "Indicates if ticket reselling is enabled."
             tickets:
               type: array
               items:
-                $ref: '#/components/schemas/Ticket'
+                $ref: "#/components/schemas/Ticket"
           description: "Details of tickets associated with the event."
         dates:
           type: object
@@ -1442,7 +1339,7 @@ components:
           properties:
             ageLimit:
               type: string
-        
+
         description:
           type: string
           description: "Detailed information about an event."
@@ -1451,24 +1348,24 @@ components:
       properties:
         name:
           type: string
-          
+
         description:
           type: string
-         
+
         id:
           type: string
           format: uuid
-          
+
         ticketPools:
           type: array
           items:
-            $ref: '#/components/schemas/TicketPool'
+            $ref: "#/components/schemas/TicketPool"
         isSinglePoolTicket:
           type: boolean
-          
+
         shouldDisplayTicketName:
           type: boolean
-          
+
     TicketPool:
       type: object
       properties:
@@ -1477,26 +1374,26 @@ components:
           properties:
             start:
               type: string
-              
+
             hasEndDate:
               type: boolean
-              
+
             end:
               type: string
-              
+
             hasStartDate:
               type: boolean
-              
+
         id:
           type: string
           format: uuid
-    
+
         salesActive:
           type: boolean
-          
+
         price:
           type: string
-          
+
     Error:
       type: object
       description: Represents an error response.
@@ -1515,8 +1412,8 @@ components:
         Custom Bearer token authentication for accessing private organizer endpoints.
       x-amazon-apigateway-authtype: custom
       x-amazon-apigateway-authorizer:
-        authorizerUri: 
-          uri: 
+        authorizerUri:
+          uri:
             Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${organizerApiAuthFunction.Arn}/invocations
         authorizerResultTtlInSeconds: 300
         identitySource: method.request.header.Authorization
@@ -1577,3 +1474,17 @@ components:
               code:
                 type: string
                 description: Error code indicating the server error.
+    Forbidden:
+      description: >
+        Forbidden. The request is authenticated but does not have the necessary permissions to access the resource.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Error message explaining the forbidden request.
+              code:
+                type: string
+                description: Error code indicating the reason for the forbidden status.

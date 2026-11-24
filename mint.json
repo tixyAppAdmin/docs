@@ -10,9 +10,7 @@
     "default": "dark",
     "isHidden": false
   },
-  "seo": {
-    "noIndex": false
-  },
+
   "favicon": "/logo/logo.svg",
   "colors": {
     "primary": "#5139ba",
@@ -37,11 +35,14 @@
     "name": "Back to Tixy",
     "url": "https://tixyapp.com"
   },
+
   "navigation": [
     {
       "group": "Get Started",
+
       "pages": [
         "introduction",
+
         {
           "group": "Quickstart",
           "pages": [
@@ -64,17 +65,18 @@
             "get-sales-terms-and-fees"
           ]
         },
+
         {
           "group": "Statistics endpoints",
           "pages": [
             "retrieve-statistics-for-events-by-status",
             "retrieve-statistics-for-a-specific-event",
             "retrieve-statistics-for-a-specific-tour",
-            "retrieve-ticket-statistics-over-a-timeline",
             "retrieve-device-statistics-for-a-specific-event-or-tour",
             "retrieve-geographic-statistics-for-a-specific-event-or-tour"
           ]
         },
+
         {
           "group": "Marketing endpoints",
           "pages": [
